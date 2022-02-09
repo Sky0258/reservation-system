@@ -1,0 +1,53 @@
+<template>
+  <div class="box">
+    <div class="header">
+      <div class="left">
+        <span class="one">高校运动场地</span>
+        <span class="two">预约系统</span>
+      </div>
+      <div class="right">
+        <i class="iconfont">&#xe611;</i>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {};
+</script>
+
+<style scoped>
+* {
+  text-decoration: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.header {
+  height: 81px;
+}
+.header .left {
+  float: left;
+}
+.header .left .one {
+  font-size: 40px;
+  font-weight: 1000;
+  color: #3083eb;
+  margin-left: 40px;
+}
+.header .left .two {
+  font-size: 40px;
+  font-weight: 1000;
+  color: #cccccc;
+}
+.header i{
+  display: block;
+  width: 60px;
+  height: 60px;
+  border-radius: 60px;
+  background-color: #dee1e6;
+  font-size: 25px;
+  line-height: 60px;
+  float: right;
+}
+</style>

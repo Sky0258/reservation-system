@@ -1,0 +1,80 @@
+<template>
+  <div>
+    <el-button type="primary" icon="el-icon-plus" style="margin: 10px 0px"
+      >添加管理员</el-button
+    >
+    <el-table
+      :data="
+        tableData.filter(
+          (data) =>
+            !search || data.name.toLowerCase().includes(search.toLowerCase())
+        )
+      "
+      style="width: 100%"
+    >
+      <el-table-column label="序号" type="index" width="60px">
+      </el-table-column>
+      <el-table-column label="用户名" prop="date"> </el-table-column>
+      <el-table-column label="用户id" prop="name"> </el-table-column>
+      <el-table-column label="电话号码" prop="name"> </el-table-column>
+      <el-table-column label="学校" prop="name"> </el-table-column>
+      <el-table-column label="班级" prop="name"> </el-table-column>
+      <el-table-column label="预约次数" prop="name" width="90px">
+      </el-table-column>
+      <el-table-column label="违约次数" prop="name" width="90px">
+      </el-table-column>
+      <el-table-column align="left">
+        <template slot="header" slot-scope="scope">
+          <el-input v-model="search" size="small" placeholder="搜索" />
+        </template>
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="danger"
+            @click="handleDelete(scope.$index, scope.row)"
+            >Delete</el-button
+          >
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from "vuex";
+export default {
+  data() {
+    return {
+      tableData: [
+        {
+          userId: "",
+          username: "",
+          mobileId: "",
+          className: "",
+          college: "",
+          orderCount: "",
+          breakCount: ""
+        },
+      ],
+      search: "",
+    };
+  },
+  mounted() {
+    this.$store.dispatch("managerInfo", {
+      //   userId:this.userInfo.data.userId       （这里这样写就OK了）
+      userId: 202041412124,
+    });
+  },
+  methods: {
+    handleDelete(index, row) {
+      console.log(index, row);
+    },
+  },
+  computed: {
+    ...mapGetters(["managerInfo"]),
+  },
+};
+</script>
+
+<style scoped>
+</style>

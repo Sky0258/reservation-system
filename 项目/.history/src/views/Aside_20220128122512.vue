@@ -1,0 +1,75 @@
+<template>
+  <div class="box">
+    <el-menu
+      default-active="2"
+      class="el-menu-vertical-demo"
+      @open="handleOpen"
+      @close="handleClose"
+      background-color="#545c64"
+      text-color="#fff"
+      active-text-color="#ffd04b"
+    >
+      <el-submenu index="1" v-for="item in menu" :key="item.id">
+        <template slot="title">
+          <i class="el-icon-location"></i>
+          <span>导航一</span>
+        </template>
+        <el-menu-item-group>
+          <template slot="title">分组一</template>
+          <el-menu-item index="1-1">选项1</el-menu-item>
+          <el-menu-item index="1-2">选项2</el-menu-item>
+        </el-menu-item-group>
+        <el-menu-item-group title="分组2">
+          <el-menu-item index="1-3">选项3</el-menu-item>
+        </el-menu-item-group>
+        <el-submenu index="1-4">
+          <template slot="title">选项4</template>
+          <el-menu-item index="1-4-1">选项1</el-menu-item>
+        </el-submenu>
+      </el-submenu>     
+    </el-menu>
+    <div>
+      <!-- <button @click="getMenuList()">点击我</button> -->
+    </div>
+  </div>
+</template>
+
+<script>
+
+import {mapGetters} from 'vuex';
+
+export default {
+  data() {
+    return {
+      menulist: []
+    }
+  },
+  created() {
+    this.getMenuList();
+  },
+  methods: {
+    async getMenuList() {
+      await this.$store.dispatch("userMenu", {
+        'roleIds' :"1",
+      });
+    },
+  },
+  computed:{
+    ...mapGetters(['menu'])
+  }
+};
+</script>
+
+<style scoped>
+* {
+  margin: 0;
+  padding: 0;
+}
+.box {
+  height: 100vh;
+}
+.box .el-menu {
+  width: 200px;
+  height: 100%;
+}
+</style>
