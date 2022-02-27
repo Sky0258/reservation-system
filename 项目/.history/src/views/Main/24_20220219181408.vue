@@ -1,0 +1,124 @@
+<template>
+  <div>
+    <h1 class="one">器材订单</h1>
+    <el-table
+    :data="tableData.filter(data => !search || data.userId.toLowerCase().includes(search.toLowerCase()))"
+    style="width: 100%">
+    <el-table-column
+      label="订单ID"
+      prop="id">
+    </el-table-column>
+    <el-table-column
+      label="用户ID"
+      prop="userId">
+    </el-table-column>
+    <el-table-column
+      label="用户名"
+      prop="username">
+    </el-table-column>
+    <el-table-column
+      label="预约器材名称"
+      prop="equipmentName">
+    </el-table-column>
+    <el-table-column
+      label="数量"
+      prop="count">
+    </el-table-column>
+    <el-table-column
+      label="预约开始时间"
+      prop="startedTime">
+    </el-table-column>
+    <el-table-column
+      label="预约结束时间"
+      prop="endedTime">
+    </el-table-column>
+    <el-table-column
+      align="right">
+      <template slot="header" slot-scope="scope">
+        <el-input
+          v-model="search"
+          size="mini"
+          placeholder="输入关键字搜索"/>
+      </template>
+      <!-- <template slot-scope="scope">
+        <el-button
+          size="mini"
+          @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+        <el-button
+          size="mini"
+          type="danger"
+          @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+      </template> -->
+    </el-table-column>
+  </el-table>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from "vuex";
+export default {
+  data() {
+    return {
+      tableData: [{
+          id:"",
+          userId:"",
+          equipmentName:"",
+          count:"",
+          username:"",
+          startedTime:"",
+          endedTime:"",
+        }],
+        search: ''
+      }
+    },
+  mounted() {
+    let userId = this.userInfo.data.userId;
+    let data = {
+      pageNum: 1,
+      pageSize: 6,
+    };
+    this.$store
+      .dispatch("equipmentAllList", { userId, data })
+      .then(() => {
+        this.tableData = this.equipmentAllList.data.list;
+      })
+      .catch(() => {
+        this.$message.error("错误");
+      });
+  },
+  methods: {
+    handleCurrentChange(val) {
+      let userId = this.userInfo.data.userId;
+      let data = {
+        pageNum: val,
+        pageSize: 6,
+      };
+      this.$store
+        .dispatch("equipmentAllList", { userId, data })
+        .then(() => {
+          this.tableData = this.equipmentAllList.data.list;
+        })
+        .catch(() => {
+          this.$message.error("错误");
+        });
+    },
+  },
+  computed: {
+    ...mapGetters(["userInfo", "equipmentAllList"]),
+  },
+};
+</script>
+
+<style scoped>
+h1 {
+  color: #409eff;
+}
+.footer {
+  position: fixed;
+  bottom: 10px;
+  height: 40px;
+  left: 100px;
+  width: 100%;
+  text-align: center;
+}
+</style>
