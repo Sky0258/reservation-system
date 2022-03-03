@@ -1,8 +1,9 @@
 import { Promise } from "core-js";
-import { reqDeleteNotice,reqChangeNotice,reqAddNotice,reqNotice,reqAllNotice,reqAddSite,reqChangeSite,reqDeleteSite,reqAllSite,reqChangeEquipment,reqAddEquipment,reqDeleteEquipment,reqAllEquipment,reqCancelSite,reqCancelEquipment,reqEquipmentAllList,reqSiteAllList,reqSiteOrderList,reqEquipmentOrderList,reqOrderEquipment,reqCreateManager, reqDeleteManager, reqManagerInfo, reqMenu,reqUserChange,reqUserPass, reqUsers } from "../api";
+import { reqUserRole,reqDeleteNotice,reqChangeNotice,reqAddNotice,reqNotice,reqAllNotice,reqAddSite,reqChangeSite,reqDeleteSite,reqAllSite,reqChangeEquipment,reqAddEquipment,reqDeleteEquipment,reqAllEquipment,reqCancelSite,reqCancelEquipment,reqEquipmentAllList,reqSiteAllList,reqSiteOrderList,reqEquipmentOrderList,reqOrderEquipment,reqCreateManager, reqDeleteManager, reqManagerInfo, reqMenu,reqUserChange,reqUserPass, reqUsers } from "../api";
 
 
 const state = {
+    role:{},
     menu:{},
     managerInfo:{},
     allUsersInfo:{},
@@ -16,6 +17,9 @@ const state = {
     notice:{}
 };
 const mutations = {
+    ROLE(state,role){
+        state.role = role;
+    },
     MENU(state,menu){
         state.menu = menu;
     },
@@ -51,6 +55,17 @@ const mutations = {
     }
 };
 const actions = {
+    //获取角色
+    async userRole({commit},userId){
+        let result = await reqUserRole(userId);
+        console.log(result.data.data);
+        if(result.data.code == 200){
+            commit("ROLE",result.data.data);
+            return "ok";
+        }else{
+            return Promise.reject(new Error("faile"));
+        }
+    },
     //菜单
     async userMenu({commit},code){
         let result = await reqMenu(code);
@@ -395,6 +410,9 @@ const getters = {
     },
     notice(state) {
         return state.notice || {};
+    },
+    role(state) {
+        return state.role || {}
     }
 };
 export default {

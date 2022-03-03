@@ -4,7 +4,7 @@
       <el-header><Header></Header></el-header>
       <el-container class="home-container">      
         <el-aside class="home-container" width="200px"><Aside></Aside></el-aside>   
-        <!-- <common-tab></common-tab> -->
+        <common-tab></common-tab>
         <el-main>
           <router-view></router-view>
         </el-main>
@@ -17,12 +17,12 @@
 import {mapGetters} from 'vuex';
 import Aside from "./Aside.vue";
 import Header from "./Header.vue";
-// import CommonTab from '../Main/CommonTab.vue'
+import CommonTab from '../Main/CommonTab.vue'
 export default {
   components: {
     Aside,
     Header,
-    // CommonTab
+    CommonTab
   },
    mounted(){
     this.$store.dispatch('getUserInfo',{

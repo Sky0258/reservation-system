@@ -9,13 +9,10 @@
 
 <script>
 // 引入vuex模块
-import { mapMutations, mapState } from 'vuex'
+import { mapGetters } from "vuex";
 export default {
   computed: {
-    // 使用vuex中state管理的tabsList数组对象数据
-    ...mapState({
-      tags: state => state.tab.tabsList
-    })
+    ...mapGetters(["tabsList"]),
   },
   data() {
     return {
@@ -25,24 +22,24 @@ export default {
     }
   },
   methods: {
-    ...mapMutations({
-      close: 'closeTab'
-    }),
-    // 通过事件绑定方法，当用户点击关闭时将tab作为参数传递给close方法，通过close方法调用vuex中的closeTab方法
-    handleClose(tag) {
-      this.close(tag)
-    }
+    // ...mapMutations({
+    //   close: 'closeTab'
+    // }),
+    // // 通过事件绑定方法，当用户点击关闭时将tab作为参数传递给close方法，通过close方法调用vuex中的closeTab方法
+    // handleClose(tag) {
+    //   this.close(tag)
+    // }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-// 设置tag标签样式
+<style scoped>
+/* 设置tag标签样式 */
 .tabs {
   padding: 20px;
-  .el-tag {
+}
+.el-tag {
     margin-right: 15px;
-  }
 }
 </style>
 

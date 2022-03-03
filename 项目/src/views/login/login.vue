@@ -91,24 +91,37 @@ export default {
     async submitForm(formName) {
       await this.$refs[formName].validate((valid) => {
         if (valid) {
-            this.$store
-              .dispatch("userLogin", {
-                captcha: this.loginForm.checkNumber,
-                password: this.loginForm.password,
-                userId: this.loginForm.id,
-              }).then(() => {
-                this.$message({
-              message: "登录成功！",
-              type: "success",
+          this.$store
+            .dispatch("userLogin", {
+              captcha: this.loginForm.checkNumber,
+              password: this.loginForm.password,
+              userId: this.loginForm.id,
+            })
+            .then(() => {
+              this.$message({
+                message: "登录成功！",
+                type: "success",
+              });
+              this.$store
+                .dispatch("getUserInfo", {
+                  Authorization: this.token,
+                })
+                .then(() => {
+                  this.$router.push("/Main");
+                  let userId = this.userInfo.data.userId;
+                  this.$store
+                    .dispatch("userRole", userId)
+                    .then(() => {
+                      console.log(userId);
+                    })
+                    .catch(() => {
+                      this.$message.error("错误");
+                    });
+                });
+            })
+            .catch(() => {
+              this.$message.error(this.message);
             });
-            this.$store.dispatch("getUserInfo", {         
-              Authorization: this.token,
-            });
-            this.$router.push("/Main");
-              })
-          .catch (() => {
-            this.$message.error(this.message);
-          });
         } else {
           console.log("error message!!");
           return false;
@@ -124,7 +137,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["token","message"]),
+    ...mapGetters(["token", "message","userInfo"]),
   },
 };
 </script>

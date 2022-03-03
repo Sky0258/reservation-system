@@ -8,58 +8,137 @@
       unique-opened
       router
     >
-      <el-submenu :index="item.id + ''" v-for="item in menu" :key="item.id" v-if="item.children.length != 0">
-        <template slot="title"> 
+      <el-submenu
+        :index="item.id + ''"
+        v-for="item in menu"
+        :key="item.id"
+        v-if="item.children.length != 0"
+      >
+        <template slot="title">
           <!-- <i class="el-icon-location"></i> -->
-          <span style="padding-left: 23px;">{{item.name}}</span>
+          <span style="padding-left: 23px">{{ item.name }}</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item :index="subItem.id +''" v-for="subItem in item.children " :key="subItem.id">
-          <template slot="title">
-            <i class="el-icon-menu"></i>
-            <span>{{subItem.name}}</span>
+          <el-menu-item
+            :index="subItem.id + ''"
+            v-for="subItem in item.children"
+            :key="subItem.id"
+          >
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span>{{ subItem.name }}</span>
             </template>
           </el-menu-item>
         </el-menu-item-group>
-      </el-submenu> 
-       <el-menu-item :index="specialItem.id + ''" v-for="specialItem in menu" :key="specialItem.id" v-if="specialItem.children.length == 0" >
+      </el-submenu>
+      <el-menu-item
+        :index="specialItem.id + ''"
+        v-for="specialItem in menu"
+        :key="specialItem.id"
+        v-if="specialItem.children.length == 0"
+      >
         <!-- <i class="el-icon-menu"></i> -->
-        <span slot="title" style="padding-left: 23px;">{{specialItem.name}}</span>
-      </el-menu-item>   
+        <span slot="title" style="padding-left: 23px">{{
+          specialItem.name
+        }}</span>
+      </el-menu-item>
     </el-menu>
-    <div>
-    </div>
+    <div></div>
   </div>
 </template>
 
 <script>
-
-import {mapGetters} from 'vuex';
+import { mapGetters } from "vuex";
 
 export default {
   data() {
     return {
-      iconsObj:[]
-    }
+      iconsObj: [],
+    };
   },
+  // created() {
+  //   // this.getMenuList();
+  //   // this.getUserRole();
+  // },
   created() {
-    this.getMenuList();
-  },
-  methods: {
-    async getMenuList() {
-      await this.$store.dispatch("userMenu", {
-        'roleIds' :"1",
+  const arr = [];
+  let userId = this.userInfo.data.userId;
+  console.log(userId);
+  this.$store
+    .dispatch("userRole", userId)
+    .then(() => {
+      for (let index in this.role) {
+        console.log(index);
+        arr.push(this.role[index].id);
+      }
+      console.log(arr);
+      var str = arr.join(',');
+      console.log(str);
+      this.$store
+      .dispatch("userMenu", {
+        roleIds: str
+      })
+      .then(() => {
+        console.log(userId)
+      })
+      .catch(() => {
+        this.$message.error("错误");
       });
-    },
+    })
+    .catch(() => {
+      this.$message.error("错误");
+    });
   },
-  computed:{
-    ...mapGetters(['menu']),
+  // methods: {
+  //   async getUserRole() {
+  //     const arr = [];
+  //     let userId = this.userInfo.data.userId;
+  //     console.log(userId);
+  //     await this.$store
+  //       .dispatch("userRole", userId)
+  //       .then(() => {
+  //         for (let index in this.role) {
+  //           console.log(index);
+  //           arr.push(this.role[index].id);
+  //         }
+  //         console.log(arr);
+  //         var str = arr.join(",");
+  //         console.log(str);
+  //         this.$store
+  //           .dispatch("userMenu", {
+  //             roleIds: str,
+  //           })
+  //           .then(() => {
+  //             console.log(userId);
+  //           })
+  //           .catch(() => {
+  //             this.$message.error("错误");
+  //           });
+  //       })
+  //       .catch(() => {
+  //         this.$message.error("错误");
+  //       });
+  //   },
+  //   async getMenuList() {
+  //     const arr = [];
+  //     for (let index in this.role) {
+  //       console.log(index);
+  //       arr.push(this.role[index].id);
+  //     }
+  //     console.log(arr);
+  //     var str = arr.join(',');
+  //     await this.$store.dispatch("userMenu", {
+  //       roleIds: str,
+  //     });
+  //   },
+  // },
+  computed: {
+    ...mapGetters(["menu", "userInfo", "role"]),
     // scrollerHeight: function() {
     //   // console.log(window.innerHeight + 'AAA');
     //   return (window.innerHeight - 60) + 'px';
     // }
-    
-  }
+  },
 };
 </script>
 
@@ -79,11 +158,11 @@ export default {
   text-align: left;
   /* padding-left: 10px; */
 }
-.box .el-menu-item{
+.box .el-menu-item {
   text-align: left;
   min-width: 180px;
 }
-.box .el-menu-vertical-demo .el-submenu >>> .el-submenu__title{
+.box .el-menu-vertical-demo .el-submenu >>> .el-submenu__title {
   padding-left: 30px;
 }
 </style>

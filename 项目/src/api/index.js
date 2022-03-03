@@ -13,6 +13,9 @@ export const reqLogout = (data)=>requests({url:`/account/logout`,headers:data,me
 //验证码接口
 export const reqUserLoginCheck = (data)=>requests({url:'/account/captcha',params:data,method:'get'});
 
+//用户角色
+export const reqUserRole = (userId)=>requests({url:`/role/${userId}/list`,method:"get"});
+
 //菜单接口
 export const reqMenu = (data)=>requests({url:'/menu/menuList',params:data,method:'get'});
 
