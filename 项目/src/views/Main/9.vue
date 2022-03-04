@@ -17,7 +17,7 @@
           <el-radio v-model="radioA" label="2">羽毛球场地2</el-radio>
           <el-radio v-model="radioA" label="3">羽毛球场地3</el-radio>
           <el-radio v-model="radioA" label="4">羽毛球场地4</el-radio>
-          <el-button type="primary" plain style="float=right">提交预约</el-button>
+          <el-button type="primary" plain style="float=right"  @click="submitForm1('ruleForm1')">提交预约</el-button>
         </div>
       </el-tab-pane>
       <el-tab-pane :label="day2">
@@ -31,7 +31,7 @@
           <el-radio v-model="radioB" label="2">羽毛球场地2</el-radio>
           <el-radio v-model="radioB" label="3">羽毛球场地3</el-radio>
           <el-radio v-model="radioB" label="4">羽毛球场地4</el-radio>
-          <el-button type="primary" plain style="float=right">提交预约</el-button>
+          <el-button type="primary" plain style="float=right"  @click="submitForm1('ruleForm1')">提交预约</el-button>
         </div>
       </el-tab-pane>
       <el-tab-pane :label="day3">
@@ -45,7 +45,7 @@
           <el-radio v-model="radioC" label="2">羽毛球场地2</el-radio>
           <el-radio v-model="radioC" label="3">羽毛球场地3</el-radio>
           <el-radio v-model="radioC" label="4">羽毛球场地4</el-radio>
-          <el-button type="primary" plain style="float=right">提交预约</el-button>
+          <el-button type="primary" plain style="float=right"  @click="submitForm1('ruleForm1')">提交预约</el-button>
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -72,6 +72,12 @@ export default {
     }
   },
   methods:{
+    submitForm1(formName) {
+      this.$message({
+        type: "success",
+        message: "提交成功!",
+      });
+    },
     ShowDate(date){
             var num = date
             let n = num;

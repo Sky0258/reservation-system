@@ -56,69 +56,69 @@ export default {
       iconsObj: [],
     };
   },
-  // created() {
-  //   // this.getMenuList();
-  //   // this.getUserRole();
-  // },
   created() {
-  const arr = [];
-  let userId = this.userInfo.data.userId;
-  console.log(userId);
-  this.$store
-    .dispatch("userRole", userId)
-    .then(() => {
-      for (let index in this.role) {
-        console.log(index);
-        arr.push(this.role[index].id);
-      }
-      console.log(arr);
-      var str = arr.join(',');
-      console.log(str);
-      this.$store
-      .dispatch("userMenu", {
-        roleIds: str
-      })
-      .then(() => {
-        console.log(userId)
-      })
-      .catch(() => {
-        this.$message.error("错误");
-      });
-    })
-    .catch(() => {
-      this.$message.error("错误");
-    });
+    // this.getMenuList();
+    this.getUserRole();
   },
-  // methods: {
-  //   async getUserRole() {
-  //     const arr = [];
-  //     let userId = this.userInfo.data.userId;
-  //     console.log(userId);
-  //     await this.$store
-  //       .dispatch("userRole", userId)
-  //       .then(() => {
-  //         for (let index in this.role) {
-  //           console.log(index);
-  //           arr.push(this.role[index].id);
-  //         }
-  //         console.log(arr);
-  //         var str = arr.join(",");
-  //         console.log(str);
-  //         this.$store
-  //           .dispatch("userMenu", {
-  //             roleIds: str,
-  //           })
-  //           .then(() => {
-  //             console.log(userId);
-  //           })
-  //           .catch(() => {
-  //             this.$message.error("错误");
-  //           });
-  //       })
-  //       .catch(() => {
-  //         this.$message.error("错误");
-  //       });
-  //   },
+  // created() {
+  // const arr = [];
+  // let userId = this.userInfo.data.userId;
+  // console.log(userId);
+  // this.$store
+  //   .dispatch("userRole", userId)
+  //   .then(() => {
+  //     for (let index in this.role) {
+  //       console.log(index);
+  //       arr.push(this.role[index].id);
+  //     }
+  //     console.log(arr);
+  //     var str = arr.join(',');
+  //     console.log(str);
+  //     this.$store
+  //     .dispatch("userMenu", {
+  //       roleIds: str
+  //     })
+  //     .then(() => {
+  //       console.log(userId)
+  //     })
+  //     .catch(() => {
+  //       this.$message.error("错误");
+  //     });
+  //   })
+  //   .catch(() => {
+  //     this.$message.error("错误");
+  //   });
+  // },
+  methods: {
+    async getUserRole() {
+      const arr = [];
+      let userId = this.userInfo.data.userId;
+      console.log(userId);
+      await this.$store
+        .dispatch("userRole", userId)
+        .then(() => {
+          for (let index in this.role) {
+            console.log(index);
+            arr.push(this.role[index].id);
+          }
+          console.log(arr);
+          var str = arr.join(",");
+          this.$store
+            .dispatch("userMenu", {
+              roleIds: str,
+            })
+            .then(() => {
+              console.log(userId);
+            })
+            .catch(() => {
+              this.$message.error("错误");
+            });
+        })
+        .catch(() => {
+          this.$message.error("错误");
+        });
+    },
+  },
   //   async getMenuList() {
   //     const arr = [];
   //     for (let index in this.role) {

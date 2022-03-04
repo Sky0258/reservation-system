@@ -163,6 +163,10 @@ export default {
       }, 10000);
     },
     check(){
+      this.$message({
+        type: "success",
+        message: "提交成功!",
+      });
       console.log('025' + this.token);
       this.$store.dispatch('getUserInfo',{
       Authorization:this.token

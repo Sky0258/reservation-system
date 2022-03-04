@@ -37,7 +37,12 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-select v-model="value" placeholder="请选择" @change="show" style="margin: 10px 30px;float: right">
+    <el-select
+      v-model="value"
+      placeholder="请选择"
+      @change="show"
+      style="margin: 10px 30px; float: right"
+    >
       <el-option
         v-for="item in options"
         :key="item.value"
@@ -102,7 +107,40 @@
           <el-input v-model="ruleForm1.name" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="图片地址" prop="imgUrl">
-          <el-input v-model="ruleForm1.imgUrl"></el-input>
+          <el-upload
+            action="#"
+            list-type="picture-card"
+            :auto-upload="false"
+            :limit="1"
+            :file-list="ImageList"
+          >
+            <i slot="default" class="el-icon-plus"></i>
+            <div slot="file" slot-scope="{ file }">
+              <img
+                class="el-upload-list__item-thumbnail"
+                :src="file.url"
+                alt=""
+              />
+              <span class="el-upload-list__item-actions">
+                <span
+                  class="el-upload-list__item-preview"
+                  @click="handlePictureCardPreview(file)"
+                >
+                  <i class="el-icon-zoom-in"></i>
+                </span>
+                <span
+                  v-if="!disabled"
+                  class="el-upload-list__item-delete"
+                  @click="handleRemove(file)"
+                >
+                  <i class="el-icon-delete"></i>
+                </span>
+              </span>
+            </div>
+          </el-upload>
+          <el-dialog :visible.sync="dialogVisible3">
+            <img width="100%" :src="dialogImageUrl" alt="" />
+          </el-dialog>
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-input v-model="ruleForm1.status"></el-input>
@@ -184,6 +222,10 @@ export default {
       dialogVisible: false,
       dialogVisible1: false,
       currentPage: 1,
+      dialogImageUrl: "",
+      dialogVisible3: false,
+      disabled: false,
+      ImageList:[]
     };
   },
   mounted() {
@@ -231,6 +273,7 @@ export default {
     handleEdit(index, row) {
       this.dialogVisible1 = true;
       this.ruleForm1 = row;
+      this.fileList.name;
     },
     handleDelete(index, row) {
       this.$confirm("此操作将删除该场地信息, 是否继续?", "提示", {
@@ -400,6 +443,21 @@ export default {
     },
     show1() {
       this.dialogVisible = true;
+    },
+    handleRemove(file, fileList) {
+      // this.dialogImageUrl = "";
+      this.ImageList = fileList;
+      file = "";
+      console.log(file);
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      console.log(file);
+      this.dialogVisible3 = true;
+    },
+    handlerSuccess(response, file, fileList) {
+      //收集图片的信息
+      this.spuImageList = fileList;
     },
   },
   computed: {

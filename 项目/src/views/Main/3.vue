@@ -71,7 +71,7 @@ export default {
         startTime: "",
         endTime: "",
         count: "1",
-        username:""
+        username: "",
       },
     };
   },
@@ -84,13 +84,24 @@ export default {
         equipmentId: this.sizeForm.equipment,
         startedTime: this.sizeForm.startTime,
         userId: this.sizeForm.userId,
-        equipmentName: "篮球",   //这里用接口获取器材名字
-        username: this.sizeForm.username
+        equipmentName: "篮球", //这里用接口获取器材名字
+        username: this.sizeForm.username,
       };
-      this.$store.dispatch("orderEquipment", {userId,data});
+      this.$store
+        .dispatch("orderEquipment", { userId, data })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "预约成功!",
+          });
+          this.sizeForm = "";
+        })
+        .catch(() => {
+          this.$message.error("预约失败，该器材数量不足");
+        });
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields();
+      this.sizeForm = "";
     },
   },
 };
