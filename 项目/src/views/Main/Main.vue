@@ -4,8 +4,8 @@
       <el-header><Header></Header></el-header>
       <el-container class="home-container">      
         <el-aside class="home-container" width="200px"><Aside></Aside></el-aside>   
-        <common-tab></common-tab>
         <el-main>
+          <common-tab></common-tab>
           <router-view></router-view>
         </el-main>
       </el-container>

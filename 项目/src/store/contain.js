@@ -1,5 +1,5 @@
 import { Promise } from "core-js";
-import { reqUserRole,reqDeleteNotice,reqChangeNotice,reqAddNotice,reqNotice,reqAllNotice,reqAddSite,reqChangeSite,reqDeleteSite,reqAllSite,reqChangeEquipment,reqAddEquipment,reqDeleteEquipment,reqAllEquipment,reqCancelSite,reqCancelEquipment,reqEquipmentAllList,reqSiteAllList,reqSiteOrderList,reqEquipmentOrderList,reqOrderEquipment,reqCreateManager, reqDeleteManager, reqManagerInfo, reqMenu,reqUserChange,reqUserPass, reqUsers } from "../api";
+import { reqOrdered,reqOrderSite,reqUserRole,reqDeleteNotice,reqChangeNotice,reqAddNotice,reqNotice,reqAllNotice,reqAddSite,reqChangeSite,reqDeleteSite,reqAllSite,reqChangeEquipment,reqAddEquipment,reqDeleteEquipment,reqAllEquipment,reqCancelSite,reqCancelEquipment,reqEquipmentAllList,reqSiteAllList,reqSiteOrderList,reqEquipmentOrderList,reqOrderEquipment,reqCreateManager, reqDeleteManager, reqManagerInfo, reqMenu,reqUserChange,reqUserPass, reqUsers } from "../api";
 
 
 const state = {
@@ -14,7 +14,8 @@ const state = {
     allEquipment:{},
     allSite:{},
     allNotice:{},
-    notice:{}
+    notice:{},
+    ordered:{}
 };
 const mutations = {
     ROLE(state,role){
@@ -52,6 +53,9 @@ const mutations = {
     },
     NOTICE(state,notice) {
         state.notice = notice;
+    },
+    ORDERED(state,ordered) {
+        state.ordered = ordered;
     }
 };
 const actions = {
@@ -376,6 +380,29 @@ const actions = {
             return Promise.reject(new Error("faile"));
         }
     },
+
+    //预约场地
+    async orderSite({commit},{userId,data}){
+        let result = await reqOrderSite(userId,data);
+        console.log(result.data);
+        if(result.data.code == 200){
+            return "ok";
+        }else{
+            return Promise.reject(new Error("faile"));
+        }
+    },
+
+    //被预约过的场地
+    async orderedSite({commit},{categoryId,userId}){
+        let result = await reqOrdered(categoryId,userId);
+        console.log(result.data);
+        if(result.data.code == 200){
+            commit("ORDERED",result.data);
+            return "ok";
+        }else{
+            return Promise.reject(new Error("faile"));
+        }
+    },
 };
 const getters = {
     menu(state){
@@ -413,6 +440,9 @@ const getters = {
     },
     role(state) {
         return state.role || {}
+    },
+    ordered(state) {
+        return state.ordered || {};
     }
 };
 export default {

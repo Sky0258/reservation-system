@@ -13,6 +13,7 @@
         v-for="item in menu"
         :key="item.id"
         v-if="item.children.length != 0"
+        @click="clickMenu(item)"
       >
         <template slot="title">
           <!-- <i class="el-icon-location"></i> -->
@@ -23,6 +24,7 @@
             :index="subItem.id + ''"
             v-for="subItem in item.children"
             :key="subItem.id"
+            @click="clickMenu(subItem)"
           >
             <template slot="title">
               <i class="el-icon-menu"></i>
@@ -36,6 +38,7 @@
         v-for="specialItem in menu"
         :key="specialItem.id"
         v-if="specialItem.children.length == 0"
+        @click="clickMenu(specialItem)"
       >
         <!-- <i class="el-icon-menu"></i> -->
         <span slot="title" style="padding-left: 23px">{{
@@ -49,7 +52,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -60,36 +63,13 @@ export default {
     // this.getMenuList();
     this.getUserRole();
   },
-  // created() {
-  // const arr = [];
-  // let userId = this.userInfo.data.userId;
-  // console.log(userId);
-  // this.$store
-  //   .dispatch("userRole", userId)
-  //   .then(() => {
-  //     for (let index in this.role) {
-  //       console.log(index);
-  //       arr.push(this.role[index].id);
-  //     }
-  //     console.log(arr);
-  //     var str = arr.join(',');
-  //     console.log(str);
-  //     this.$store
-  //     .dispatch("userMenu", {
-  //       roleIds: str
-  //     })
-  //     .then(() => {
-  //       console.log(userId)
-  //     })
-  //     .catch(() => {
-  //       this.$message.error("错误");
-  //     });
-  //   })
-  //   .catch(() => {
-  //     this.$message.error("错误");
-  //   });
-  // },
   methods: {
+    clickMenu(item) {
+      //调用vuex的selectMenu方法存储数据
+      this.$store.commit("selectMenu", item);
+      //跳转路由
+      this.$router.push({ name: item.name });
+    },
     async getUserRole() {
       const arr = [];
       let userId = this.userInfo.data.userId;
@@ -138,6 +118,9 @@ export default {
     //   // console.log(window.innerHeight + 'AAA');
     //   return (window.innerHeight - 60) + 'px';
     // }
+    ...mapState({
+      current: (state) => state.tab.currentMenu,
+    }),
   },
 };
 </script>

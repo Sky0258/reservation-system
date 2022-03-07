@@ -12,18 +12,19 @@ export default {
 
 <style scoped>
 .box {
-  height: 92%;
+  height: 82%;
   width: 100%;
   background: url(./images/背景1.png);
   background-size: 100% 100%;
   margin: 0 auto;
   padding: 0;
   position: relative;
+  margin-top: 40px;
 }
 h1 {
   font-size: 24px;
   position: absolute;
-  top: 50px;
+  top: 0px;
   left: 340px;
 }
 </style>

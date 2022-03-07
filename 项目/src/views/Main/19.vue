@@ -28,6 +28,14 @@
         prop="equipmentName"
         width="100px"
         align="center"
+        v-if="labelName == '器材名称'"
+      >
+      </el-table-column>
+      <el-table-column
+        label="场地名称"
+        prop="siteName"
+        align="center"
+        v-if="labelName == '场地名称'"
       >
       </el-table-column>
       <el-table-column
@@ -80,6 +88,7 @@ export default {
           id: "",
           userId: "",
           equipmentName: "",
+          siteName:"",
           count: "",
           username: "",
           startedTime: "",

@@ -101,4 +101,10 @@ export const reqAddNotice = (userId, data) => requests({ url:`/api/notification/
 export const reqChangeNotice = (userId, data) => requests({ url:`/api/notification/${userId}`,method:"put",data});
 
 //删除公告
-export const reqDeleteNotice = (notificationId) => requests({ url:`/api/notification/${notificationId}`,method:"delete"})
+export const reqDeleteNotice = (notificationId) => requests({ url:`/api/notification/${notificationId}`,method:"delete"});
+
+//预约场地
+export const reqOrderSite = (userId,data)=>requests({url:`/api/${userId}/site-order`,method:"post",data});
+
+//查询被预约过的场地
+export const reqOrdered = (categoryId,userId)=>requests({url:`/api/${userId}/listSiteOrder/${categoryId}`,method:"get"})

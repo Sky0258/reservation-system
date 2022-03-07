@@ -1,45 +1,121 @@
 <template>
   <div class="tabs">
-    <!-- :closable="tag.name !== 'home'" tag标签为home时不显示关闭按钮 -->
-    <el-tag size="small" :key="tag.name" v-for="tag in tags" :closable="tag.name !== 'home'" :disable-transitions="false" @close="handleClose(tag)">
-      {{ tag.label }}
-    </el-tag>
+    <!--closable这里说明home是不能关闭的-->
+    <el-tabs
+      v-model="editableTabsValue"
+      type="card"
+      closable
+      @tab-remove="removeTab"
+      @tab-click="change1"
+      size="mini"
+    >
+      <el-tab-pane
+        v-for="(item,index) in tags"
+        :key="item.name"
+        :label="item.name"
+        :name="item.name"
+        size="mini"
+      >
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
 <script>
-// 引入vuex模块
-import { mapGetters } from "vuex";
+import { mapState, mapMutations } from "vuex";
 export default {
   computed: {
-    ...mapGetters(["tabsList"]),
+    //获取vuex的标签集合数据
+    ...mapState({
+      tags: (state) => state.tab.tabsList,
+    }),
   },
   data() {
-    return {
-      dynamicTags: ['标签一', '标签二', '标签三'],
-      inputVisible: false,
-      inputValue: ''
-    }
+      return {
+        editableTabsValue: '2',
+        editableTabs:[{
+          title: 'Tab 1',
+          name: '1',
+          content: 'Tab 1 content'
+        }, {
+          title: 'Tab 2',
+          name: '2',
+          content: 'Tab 2 content'
+        }],
+        tabIndex: 2
+      }
+  },
+  mounted:{
+    
   },
   methods: {
-    // ...mapMutations({
-    //   close: 'closeTab'
-    // }),
-    // // 通过事件绑定方法，当用户点击关闭时将tab作为参数传递给close方法，通过close方法调用vuex中的closeTab方法
-    // handleClose(tag) {
-    //   this.close(tag)
-    // }
-  }
-}
-</script>
+    ...mapMutations({
+      close: "closeTab",
+    }),
+    change1(item){
+      this.$router.push({ name: item.name });
+      this.$store.commit("selectMenu", item);
+    },
+    change(index){
+      this.index1 = index;
+      console.log(this.index1);
+    },
+    //关闭标签
+    handleClose(tag, index) {
+      let length = this.tags.length - 1;
+      //vuex调方法的另一种写法
+      this.close(tag);
+      // 如果关闭的标签不是当前路由的话，就不跳转
+      if (tag.name !== this.$route.name) {
+        return;
+      }
+      // 关闭的标签是最右边的话，往左边跳转一个
+      if (index === length) {
+        this.$router.push({ name: this.tags[index - 1].name });
+      } else {
+        // 否则往右边跳转
+        this.$router.push({ name: this.tags[index].name });
+      }
+    },
 
+    //选择标签跳转路由
+    changeMenu(item) {
+      this.$router.push({ name: item.name });
+      this.$store.commit("selectMenu", item);
+    },
+    removeTab(targetName) {
+        let length = this.tags.length - 1;
+        let tabs = this.tags;
+        this.close(targetName);
+        if (targetName.name !== this.$route.name) {
+        console.log("!@22");
+      }
+    
+        let activeName = this.editableTabsValue;
+        if (activeName === targetName) {
+          tabs.forEach((tab, index) => {
+            if (tab.name === targetName) {
+              let nextTab = tabs[index + 1] || tabs[index - 1];
+              this.$router.push({ name: this.tags[index - 1].name });
+              if (nextTab) {
+                activeName = nextTab.name;
+              }
+            }
+          });
+        }
+        this.editableTabsValue = activeName;
+        this.tags = tabs.filter(tab => tab.name !== targetName);
+      }
+  },
+};
+</script>
 <style scoped>
-/* 设置tag标签样式 */
-.tabs {
-  padding: 20px;
-}
-.el-tag {
-    margin-right: 15px;
+.el-tag--medium {
+  height: 35px;
+  line-height: 32px;
+  font-size: 14px;
+  margin: 0px 5px;
+  /* display: inline; */
+  float: left;
 }
 </style>
-

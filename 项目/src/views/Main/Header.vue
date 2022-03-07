@@ -3,7 +3,12 @@
     <div class="left">高校运动场地预约系统</div>
     <div class="middle">
       <el-breadcrumb separator-class="el-icon-arrow-right" id="two">
-        <el-breadcrumb-item v-for="breadCrumbItem in breadCrumbList" :key="breadCrumbItem.path" :to="{ path:breadCrumbItem.path}">{{breadCrumbItem.meta.title}}</el-breadcrumb-item>
+        <el-breadcrumb-item
+          v-for="breadCrumbItem in breadCrumbList"
+          :key="breadCrumbItem.path"
+          :to="{ path: breadCrumbItem.path }"
+          >{{ breadCrumbItem.meta.title }}</el-breadcrumb-item
+        >
       </el-breadcrumb>
     </div>
     <div class="right">
@@ -15,11 +20,11 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { mapState } from "vuex";
 export default {
-    mounted(){
-        console.log(this.$route.matched);
-    }
-    ,
+  mounted() {
+    console.log(this.$route.matched);
+  },
   methods: {
     logout() {
       this.$store.dispatch("userLogout", {
@@ -30,8 +35,11 @@ export default {
   computed: {
     ...mapGetters(["token", "userInfo"]),
     breadCrumbList() {
-        return this.$route.matched;
-    }
+      return this.$route.matched;
+    },
+    ...mapState({
+      current: (state) => state.tab.currentMenu,
+    }),
   },
 };
 </script>
@@ -51,19 +59,19 @@ export default {
   line-height: 60px;
 }
 .box .middle {
-    float: left;
+  float: left;
 }
 .box .middle >>> .el-breadcrumb {
-    line-height: 67px;
-    margin-left: 15px;
-    font-size: 14px;
+  line-height: 67px;
+  margin-left: 15px;
+  font-size: 14px;
 }
 /* .middle >>> .el-breadcrumb >>> .el-breadcrumb__inner >>> .is-link {
     color: green;
 } */
 .el-breadcrumb ::v-deep .el-breadcrumb__inner {
-        color: gainsboro;
-        font-weight: 300;
+  color: gainsboro;
+  font-weight: 300;
 }
 .right i {
   float: right;

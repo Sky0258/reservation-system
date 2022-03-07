@@ -121,6 +121,7 @@ export default {
             })
             .catch(() => {
               this.$message.error(this.message);
+              this.check();
             });
         } else {
           console.log("error message!!");
