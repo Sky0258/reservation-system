@@ -1,22 +1,33 @@
 <template>
   <div>
-    <el-carousel type="card" :autoplay="false" ref="carousel"
-        arrow="always"
-        trigger="click" height="150px" style="margin-bottom: 5px">
-    <el-carousel-item  v-for="(item, index) in allSiteList"
-          :key="item.index"
-          style="width: 350px; margin-left: 82px;height: 150px">
-      <img :src="item.imgUrl" style="margin: 0px;width: 350px;height: 150px">
-    </el-carousel-item>
-  </el-carousel>
+    <el-carousel
+      type="card"
+      :autoplay="false"
+      ref="carousel"
+      arrow="always"
+      trigger="click"
+      height="150px"
+      style="margin-bottom: 5px"
+    >
+      <el-carousel-item
+        v-for="(item, index) in allSiteList"
+        :key="item.index"
+        style="width: 350px; margin-left: 85px; height: 150px"
+      >
+        <img
+          :src="item.imgUrl"
+          style="margin: 0px; width: 350px; height: 150px"
+        />
+      </el-carousel-item>
+    </el-carousel>
     <el-tabs type="border-card" v-model="day">
       <el-tab-pane :label="day1" v-model="day">
         <div>
           <el-radio-group v-model="radio1">
             <el-radio-button
-              :disabled="result(city,day1,radioA)"
               class="contain"
               v-for="city in cities"
+              :disabled="result(city, day1, radioA)"
               :label="city"
               :key="city"
               >{{ city }}</el-radio-button
@@ -29,7 +40,7 @@
             :label="item.id"
             v-for="(item, index) in allSiteList"
             :key="item.index"
-            @change="showstep(item.name.substr(4) - 1)"
+            @change="showstep(item.name.substr(3) - 1)"
             >{{ item.name }}</el-radio
           >
           <el-button
@@ -45,7 +56,7 @@
         <div>
           <el-radio-group v-model="radio2">
             <el-radio-button
-              :disabled="result(city,day2,radioA)"
+              :disabled="result(city, day2, radioA)"
               class="contain"
               v-for="city in cities"
               :label="city"
@@ -60,7 +71,7 @@
             :label="item.id"
             v-for="(item, index) in allSiteList"
             :key="item.index"
-            @change="showstep(item.name.substr(4) - 1)"
+            @change="showstep(item.name.substr(3) - 1)"
             >{{ item.name }}</el-radio
           >
           <el-button
@@ -76,9 +87,9 @@
         <div>
           <el-radio-group v-model="radio3">
             <el-radio-button
-              :disabled="result(city,day3,radioA)"
               class="contain"
               v-for="city in cities"
+              :disabled="result(city, day3, radioA)"
               :label="city"
               :key="city"
               >{{ city }}</el-radio-button
@@ -91,7 +102,7 @@
             :label="item.id"
             v-for="(item, index) in allSiteList"
             :key="item.index"
-            @change="showstep(item.name.substr(4) - 1)"
+            @change="showstep(item.name.substr(3) - 1)"
             >{{ item.name }}</el-radio
           >
           <el-button
@@ -146,16 +157,14 @@ export default {
       day3: this.ShowDate(-2),
       cities: cityOptions,
       checkboxGroup1: ["上海"],
-      radioA: 9,
+      radioA: 1,
       radio1: "07:00 ~ 09:00",
       radio2: "07:00 ~ 09:00",
       radio3: "07:00 ~ 09:00",
       img1: "",
-      nowDay:"",
-      nowDay1:"",
-      dialogVisible:false,
+      dialogVisible: false,
       messageTime:"",
-      num:"羽毛球场1",
+      num:"篮球场1",
       allSiteList:""
     };
   },
@@ -165,7 +174,7 @@ export default {
       pageSize: 100,
     };
     let userId = this.userInfo.data.userId;
-    let categoryId = 2;
+    let categoryId = 0;
     this.$store
       .dispatch("allSite", {
         userId,
@@ -176,8 +185,8 @@ export default {
         this.allSiteList = this.allSite.data.list;
         this.$store
           .dispatch("orderedSite", {
-            categoryId: 2,
-            userId: this.userInfo.data.userId
+            categoryId: 0,
+            userId: this.userInfo.data.userId,
           })
           .then(() => {
             console.log(this.ordered);
@@ -191,12 +200,9 @@ export default {
       });
   },
   methods: {
-    top(a){
-      console.log(a);
-    },
     showstep(ind) {
       this.$refs.carousel.setActiveItem(ind);
-      this.num = '乒乓球场' + (ind + 1).toString();
+      this.num = '篮球场' + (ind + 1).toString();
     },
     show(){
       this.dialogVisible = true;
@@ -213,40 +219,37 @@ export default {
       }
       this.messageTime = '' + startedTime1 + ' ~ ' + endedTime1.substr(11,12);
     },
-    result(city,day,radio) {
-      let a = city.substr(0,5) + ':00';
-      let b = city.substr(8,10) + ':00';
-      let c = '' + day + ' ' + a;
-      let d = '' + day + ' ' + b;
-      for(let index in this.ordered.data){
-        if(c == this.ordered.data[index].startedTime && d == this.ordered.data[index].endedTime && radio == this.ordered.data[index].siteId){
+    result(city, day, radio) {
+      let a = city.substr(0, 5) + ":00";
+      let b = city.substr(8, 10) + ":00";
+      let c = "" + day + " " + a;
+      let d = "" + day + " " + b;
+      for (let index in this.ordered.data) {
+        if (
+          c == this.ordered.data[index].startedTime &&
+          d == this.ordered.data[index].endedTime &&
+          radio == this.ordered.data[index].siteId
+        ) {
           a = 1;
           break;
         }
       }
-      if(a == 1)
-        return true;
-      else
-        return false;
+      if (a == 1) return true;
+      else return false;
     },
     submitForm1(formName) {
       let endedTime1, startedTime1;
       if (this.day == 0) {
         endedTime1 = this.ShowDate(0) + " " + this.time1[1] + ":00";
         startedTime1 = this.ShowDate(0) + " " + this.time1[0] + ":00";
-        console.log(startedTime1);
-        console.log(endedTime1);
       } else if (this.day == 1) {
         endedTime1 = this.ShowDate(-1) + " " + this.time2[1] + ":00";
         startedTime1 = this.ShowDate(-1) + " " + this.time2[0] + ":00";
-        console.log(startedTime1);
-        console.log(endedTime1);
       } else {
         endedTime1 = this.ShowDate(-2) + " " + this.time3[1] + ":00";
         startedTime1 = this.ShowDate(-2) + " " + this.time3[0] + ":00";
-        console.log(startedTime1);
-        console.log(endedTime1);
       }
+      this.messageTime = '' + startedTime1 + ' ~ ' + endedTime1.substr(11,12);
       let siteName1 = this.num;
       let userId = this.userInfo.data.userId;
       let data = {
@@ -262,7 +265,7 @@ export default {
         .then(() => {
           this.$message({
             type: "success",
-            message: "提交成功!",
+            message: "预约成功!",
           });
         })
         .catch(() => {
@@ -309,12 +312,6 @@ export default {
     time3: function () {
       return this.radio3.split(" ~ ");
     },
-    time4: function(){
-      return this.nowDay.split(" ");
-    },
-    time5: function(){
-      return this.nowDay1.split(" ");
-    }
   },
 };
 </script>
@@ -330,22 +327,21 @@ export default {
   margin: 10px 40px;
 }
 .contain {
-  margin: 15px 10px;
+  margin: 15px 30px;
 }
 .el-radio-button:first-child >>> .el-radio-button__inner {
   border-left: 1px solid #dcdfe6;
 }
 .el-radio-button >>> .el-radio-button__inner {
   border: 1px solid #dcdfe6;
-  width: 120px;
+  width: 80px;
   height: 55px;
-  font-size: 15px;
+  font-size: 17px;
   line-height: 30px;
   border-radius: 10px;
-  padding-left: 13px;
 }
 .ground {
-  margin: 15px 30px;
+  margin: 15px 10px;
   text-align: left;
   line-height: 30px;
 }

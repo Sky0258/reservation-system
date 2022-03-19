@@ -165,7 +165,7 @@ export default {
       pageSize: 100,
     };
     let userId = this.userInfo.data.userId;
-    let categoryId = 2;
+    let categoryId = 1;
     this.$store
       .dispatch("allSite", {
         userId,
@@ -176,7 +176,7 @@ export default {
         this.allSiteList = this.allSite.data.list;
         this.$store
           .dispatch("orderedSite", {
-            categoryId: 2,
+            categoryId: 1,
             userId: this.userInfo.data.userId
           })
           .then(() => {
@@ -196,7 +196,8 @@ export default {
     },
     showstep(ind) {
       this.$refs.carousel.setActiveItem(ind);
-      this.num = '乒乓球场' + (ind + 1).toString();
+      this.num = '羽毛球场' + (ind + 1).toString();
+      console.log(this.num);
     },
     show(){
       this.dialogVisible = true;
@@ -339,7 +340,7 @@ export default {
   border: 1px solid #dcdfe6;
   width: 120px;
   height: 55px;
-  font-size: 15px;
+  font-size: 17px;
   line-height: 30px;
   border-radius: 10px;
   padding-left: 13px;
@@ -351,7 +352,7 @@ export default {
 }
 .el-button--primary.is-plain {
   float: right;
-  margin-right: 0px;
+  margin-right: 70px;
 }
 .el-carousel__item:nth-child(2n) {
   background-color: #99a9bf;
