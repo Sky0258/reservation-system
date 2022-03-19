@@ -129,11 +129,11 @@ h1 {
   color: #409eff;
   margin-top: 0px;
   margin-bottom: 5px;
-  font-size: 18px;
+  font-size: 20px;
 }
 .footer {
   position: fixed;
-  bottom: 0px;
+  bottom: 5px;
   height: 40px;
   left: 100px;
   width: 100%;

@@ -4,7 +4,7 @@
       type="primary"
       icon="el-icon-plus"
       style="margin: -5px 40px; float: left"
-      @click="showAddNotice"
+      @click="dialogVisible = true"
       >添加公告</el-button
     >
     <h1 class="one" style="margin: 15px 200px">公告栏列表</h1>
@@ -179,11 +179,6 @@ export default {
       });
   },
   methods: {
-    showAddNotice(){
-      this.dialogVisible = true;
-      this.ruleForm.title = "";
-      this.ruleForm.content = "";
-    },
     handleEdit(index, row) {
       this.dialogVisible1 = true;
       this.ruleForm1 = {...row};
@@ -331,6 +326,7 @@ export default {
                   this.tableData = this.allNotice.data.list;
                   this.totalPage = this.allNotice.data.total;
                   this.tableData1 = this.allNotice.data.list;
+                  eventBus.$emit('changeNotice',this.tableData1);
                   this.$message({
                     type: "success",
                     message: "删除成功!",

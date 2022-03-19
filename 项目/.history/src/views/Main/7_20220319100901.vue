@@ -180,7 +180,7 @@ export default {
   },
   methods: {
     showAddNotice(){
-      this.dialogVisible = true;
+      dialogVisible = true;
       this.ruleForm.title = "";
       this.ruleForm.content = "";
     },

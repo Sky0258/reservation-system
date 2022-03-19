@@ -174,6 +174,5 @@ li {
   color: #e0e0e0;
   font-family: "宋体";
   font-weight: 500;
-  font-size: 15px;
 }
 </style>

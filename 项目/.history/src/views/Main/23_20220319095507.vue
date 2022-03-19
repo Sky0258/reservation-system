@@ -133,7 +133,7 @@ h1 {
 }
 .footer {
   position: fixed;
-  bottom: 0px;
+  bottom: 5px;
   height: 40px;
   left: 100px;
   width: 100%;
