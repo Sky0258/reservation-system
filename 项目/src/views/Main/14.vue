@@ -168,7 +168,7 @@ export default {
       pageSize: 100,
     };
     let userId = this.userInfo.data.userId;
-    let categoryId = 7;
+    let categoryId = 5;
     this.$store
       .dispatch("allSite", {
         userId,
@@ -179,7 +179,7 @@ export default {
         this.allSiteList = this.allSite.data.list;
         this.$store
           .dispatch("orderedSite", {
-            categoryId: 7,
+            categoryId: 5,
             userId: this.userInfo.data.userId,
           })
           .then(() => {

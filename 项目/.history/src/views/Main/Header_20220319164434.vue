@@ -11,7 +11,7 @@
         >
       </el-breadcrumb>
     </div>
-    <div id="demo" style="width: 700px; float: left; margin-top: 10px">
+    <div id="demo" style="width: 700px;float: left;margin-top: 10px">
       <ul class="list">
         <li
           v-for="(item, index) in ulList"
@@ -26,7 +26,7 @@
       </ul>
     </div>
     <div class="right">
-      <router-link to="/login" @click.native="logout">退出登录</router-link>
+      <router-link to="/login" @click="logout()">退出登录</router-link>
       <span class="one">{{ "欢迎你，" + this.userInfo.data.username }}</span>
     </div>
   </div>
@@ -63,22 +63,18 @@ export default {
   },
   methods: {
     logout() {
-      this.$store
-        .dispatch("userLogout", {
-          Authorization: this.token,
-        })
-        .then(() => {
-          window.location.reload();
-          window.localStorage.clear();
-          window.sessionStorage.clear();
-          this.$message({
-            type: "success",
-            message: "退出成功!",
-          });
-        })
-        .catch(() => {
-          this.$message.error("错误");
-        });
+      this.$store.dispatch("userLogout", {
+        Authorization: this.token,
+      })
+      .then(() => {
+        this.$message({
+                    type: "success",
+                    message: "删除成功!",
+                  });
+      })
+      .catch(() => {
+        this.$message.error("错误");
+      });
     },
     startPlay() {
       let that = this;
@@ -91,7 +87,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["token", "userInfo", "allNotice"]),
+    ...mapGetters(["token", "userInfo","allNotice"]),
     breadCrumbList() {
       return this.$route.matched;
     },

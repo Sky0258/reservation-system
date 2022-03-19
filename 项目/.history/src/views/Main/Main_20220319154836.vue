@@ -12,6 +12,7 @@
     </el-container>
   </div>
 </template>
+
 <script>
 import Aside from "./Aside.vue";
 import Header from "./Header.vue";

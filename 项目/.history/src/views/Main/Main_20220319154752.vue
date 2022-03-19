@@ -12,7 +12,9 @@
     </el-container>
   </div>
 </template>
+
 <script>
+import {mapGetters} from 'vuex';
 import Aside from "./Aside.vue";
 import Header from "./Header.vue";
 import CommonTab from '../Main/CommonTab.vue'
@@ -22,6 +24,14 @@ export default {
     Header,
     CommonTab
   },
+   mounted(){
+    this.$store.dispatch('getUserInfo',{
+      Authorization:this.token
+    });
+   },
+  computed:{
+    ...mapGetters(['token','userInfo']),
+  }
 };
 </script>
 

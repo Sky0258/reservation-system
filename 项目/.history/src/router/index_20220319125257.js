@@ -17,6 +17,7 @@ import nine from '../views/Main/9.vue'
 import ten from '../views/Main/10.vue'
 import eleven from '../views/Main/11.vue'
 import twelve from '../views/Main/12.vue'
+import thirteen from '../views/Main/13.vue'
 import fourteen from '../views/Main/14.vue'
 import selfInfo from '../views/Main/20.vue'
 import nineteen from '../views/Main/19.vue'
@@ -136,6 +137,14 @@ export default new VueRouter({
                     name:"匹克球场"
                 },
                 {
+                    path: '/13',
+                    component: thirteen,
+                    meta: {
+                        title: "游泳馆"
+                    },
+                    name:"游泳馆"
+                },
+                {
                     path: '/14',
                     component: fourteen,
                     meta: {
@@ -206,6 +215,14 @@ export default new VueRouter({
                         title: "器材管理"
                     },
                     name:"器材管理"
+                },
+                {
+                    path: '/30',
+                    component: thirty,
+                    meta: {
+                        title: "公告栏"
+                    },
+                    name:"公告栏"
                 },
                 {
                     path: '/28',

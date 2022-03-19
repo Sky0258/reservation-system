@@ -68,7 +68,6 @@ export default {
           Authorization: this.token,
         })
         .then(() => {
-          window.location.reload();
           window.localStorage.clear();
           window.sessionStorage.clear();
           this.$message({

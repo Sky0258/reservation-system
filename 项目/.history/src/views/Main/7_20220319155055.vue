@@ -140,6 +140,14 @@ export default {
           authorName: "",
         },
       ],
+      tableData1: [
+        {
+          id: "",
+          title: "",
+          createTime: "",
+          authorName: "",
+        },
+      ],
       ruleForm: {
         title: "",
         content: "",
@@ -153,35 +161,32 @@ export default {
       search: "",
       currentPage: 1,
       dialogVisible1: false,
-      totalPage: 1,
+      totalPage:1
     };
   },
   mounted() {
-    this.getNoticeList();
+    this.$store
+      .dispatch("allNotice", {
+        pageNum: 1,
+        pageSize: 5,
+      })
+      .then(() => {
+        this.tableData = this.allNotice.data.list;
+        this.totalPage = this.allNotice.data.total;
+      })
+      .catch(() => {
+        this.$message.error("错误");
+      });
   },
   methods: {
-    getNoticeList() {
-      this.$store
-        .dispatch("allNotice", {
-          pageNum: this.currentPage,
-          pageSize: 5,
-        })
-        .then(() => {
-          this.tableData = this.allNotice.data.list;
-          this.totalPage = this.allNotice.data.total;
-        })
-        .catch(() => {
-          this.$message.error("错误");
-        });
-    },
-    showAddNotice() {
+    showAddNotice(){
       this.dialogVisible = true;
       this.ruleForm.title = "";
       this.ruleForm.content = "";
     },
     handleEdit(index, row) {
       this.dialogVisible1 = true;
-      this.ruleForm1 = { ...row };
+      this.ruleForm1 = {...row};
     },
     handleDelete(index, row) {
       console.log(index, row);
@@ -238,7 +243,19 @@ export default {
                 type: "success",
                 message: "添加成功!",
               });
-              this.getNoticeList();
+              this.$store
+                .dispatch("allNotice", {
+                  pageNum: this.currentPage,
+                  pageSize: 5,
+                })
+                .then(() => {
+                  this.tableData = this.allNotice.data.list;
+                  this.totalPage = this.allNotice.data.total;
+                  this.tableData1 = this.allNotice.data.list;
+                })
+                .catch(() => {
+                  this.$message.error("错误");
+                });
             })
             .catch(() => {
               this.$message.error("错误");
@@ -255,7 +272,7 @@ export default {
         if (valid) {
           let userId = this.userInfo.data.userId;
           let data = {
-            id: this.ruleForm1.id,
+            id:this.ruleForm1.id,
             authorId: this.userInfo.data.userId,
             content: this.ruleForm1.content,
             title: this.ruleForm1.title,
@@ -268,7 +285,19 @@ export default {
                 type: "success",
                 message: "修改成功!",
               });
-              this.getNoticeList();
+              this.$store
+                .dispatch("allNotice", {
+                  pageNum: this.currentPage,
+                  pageSize: 5,
+                })
+                .then(() => {
+                  this.tableData = this.allNotice.data.list;
+                  this.totalPage = this.allNotice.data.total;
+                  this.tableData1 = {...this.allNotice.data.list};
+                })
+                .catch(() => {
+                  this.$message.error("错误");
+                });
             })
             .catch(() => {
               // this.resetForm1("ruleForm1");
@@ -290,14 +319,26 @@ export default {
         .then(() => {
           this.$store
             .dispatch("deleteNotice", {
-              notificationId: row.id,
+              notificationId: row.id
             })
             .then(() => {
-              this.$message({
-                type: "success",
-                message: "删除成功!",
-              });
-              this.getNoticeList();
+              this.$store
+                .dispatch("allNotice", {
+                  pageNum: this.currentPage,
+                  pageSize: 5,
+                })
+                .then(() => {
+                  this.tableData = this.allNotice.data.list;
+                  this.totalPage = this.allNotice.data.total;
+                  this.tableData1 = this.allNotice.data.list;
+                  this.$message({
+                    type: "success",
+                    message: "删除成功!",
+                  });
+                })
+                .catch(() => {
+                  this.$message.error("错误");
+                });
             })
             .catch(() => {
               this.$message.error("错误");

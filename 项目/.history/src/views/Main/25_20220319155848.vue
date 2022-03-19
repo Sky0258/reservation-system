@@ -32,8 +32,6 @@
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
-            v-loading="loading"
-            element-loading-text="加载中"
           >
             <img v-if="ruleForm.imgUrl" :src="ruleForm.imgUrl" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -124,8 +122,6 @@
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
-            v-loading="loading"
-            element-loading-text="加载中"
           >
             <img v-if="ruleForm1.imgUrl" :src="ruleForm1.imgUrl" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -219,7 +215,6 @@ export default {
       dialogVisible3: false,
       disabled: false,
       totalPage: 2,
-      loading: false
     };
   },
   mounted() {
@@ -381,15 +376,12 @@ export default {
     show1() {
       this.dialogVisible = true;
       this.resetForm('ruleForm');
-      this.ruleForm.imgUrl = "";
     },
     handleAvatarSuccess(res, file) {
-      this.loading = false;
       this.ruleForm1.imgUrl = res.data[0];
       this.ruleForm.imgUrl = res.data[0];
     },
     beforeAvatarUpload(file) {
-      this.loading = true;
       const isJPG = file.type === "image/jpeg";
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isJPG) {

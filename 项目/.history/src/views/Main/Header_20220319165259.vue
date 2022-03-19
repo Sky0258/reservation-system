@@ -68,9 +68,9 @@ export default {
           Authorization: this.token,
         })
         .then(() => {
-          window.location.reload();
           window.localStorage.clear();
-          window.sessionStorage.clear();
+    window.sessionStorage.clear();
+    clearCookie();
           this.$message({
             type: "success",
             message: "退出成功!",

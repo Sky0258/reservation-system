@@ -381,7 +381,6 @@ export default {
     show1() {
       this.dialogVisible = true;
       this.resetForm('ruleForm');
-      this.ruleForm.imgUrl = "";
     },
     handleAvatarSuccess(res, file) {
       this.loading = false;

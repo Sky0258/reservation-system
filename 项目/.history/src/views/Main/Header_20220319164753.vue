@@ -26,7 +26,7 @@
       </ul>
     </div>
     <div class="right">
-      <router-link to="/login" @click.native="logout">退出登录</router-link>
+      <router-link to="/login" @click="logout()">退出登录</router-link>
       <span class="one">{{ "欢迎你，" + this.userInfo.data.username }}</span>
     </div>
   </div>
@@ -63,14 +63,12 @@ export default {
   },
   methods: {
     logout() {
+      alert("!1111111111");
       this.$store
         .dispatch("userLogout", {
           Authorization: this.token,
         })
         .then(() => {
-          window.location.reload();
-          window.localStorage.clear();
-          window.sessionStorage.clear();
           this.$message({
             type: "success",
             message: "退出成功!",

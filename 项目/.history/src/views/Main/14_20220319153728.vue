@@ -196,7 +196,7 @@ export default {
   methods: {
     showstep(ind) {
       this.$refs.carousel.setActiveItem(ind);
-      this.num = '游泳馆' + (ind + 1).toString();
+      this.num = '足球场' + (ind + 1).toString();
     },
     show(){
       this.dialogVisible = true;
