@@ -92,7 +92,6 @@
       title="修改公告信息"
       :visible.sync="dialogVisible1"
       width="30%"
-      :before-close="handleClose"
     >
       <el-form
         :model="ruleForm1"
@@ -208,12 +207,12 @@ export default {
     showNotice(row) {
       this.$alert(row.content, row.title, {
         confirmButtonText: "确定",
-        // callback: (action) => {
-        //   this.$message({
-        //     type: "info",
-        //     message: `action: ${action}`,
-        //   });
-        // },
+        callback: (action) => {
+          this.$message({
+            type: "info",
+            message: `action: ${action}`,
+          });
+        },
       });
     },
     handleClose(done) {
