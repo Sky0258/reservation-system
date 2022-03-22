@@ -167,7 +167,7 @@ export default {
       img1: "",
       dialogVisible: false,
       messageTime:"",
-      num:"网球场1",
+      num:"足球场1",
       allSiteList:""
     };
   },
@@ -177,7 +177,7 @@ export default {
       pageSize: 100,
     };
     let userId = this.userInfo.data.userId;
-    let categoryId = 3;
+    let categoryId = 5;
     this.$store
       .dispatch("allSite", {
         userId,
@@ -186,16 +186,17 @@ export default {
       })
       .then(() => {
         for(let k in this.allSite.data.list){
-          if(this.allSite.data.list[k].status == 0){
+          if(k.status == 0){
             this.radioA = this.allSite.data.list[k].id;
             this.num = this.allSite.data.list[k].name;
             break;
           }
         }
+        console.log(this.num);
         this.allSiteList = this.allSite.data.list;
         this.$store
           .dispatch("orderedSite", {
-            categoryId: 3,
+            categoryId: 5,
             userId: this.userInfo.data.userId,
           })
           .then(() => {

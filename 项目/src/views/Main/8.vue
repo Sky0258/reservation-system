@@ -39,8 +39,9 @@
             v-model="radioA"
             :label="item.id"
             v-for="(item, index) in allSiteList"
+            :disabled="item.status != 0"
             :key="item.index"
-            @change="showstep(item.name.substr(3) - 1)"
+            @change="showstep(index)"
             >{{ item.name }}</el-radio
           >
           <el-button
@@ -70,8 +71,9 @@
             v-model="radioA"
             :label="item.id"
             v-for="(item, index) in allSiteList"
+            :disabled="item.status != 0"
             :key="item.index"
-            @change="showstep(item.name.substr(3) - 1)"
+            @change="showstep(index)"
             >{{ item.name }}</el-radio
           >
           <el-button
@@ -101,8 +103,9 @@
             v-model="radioA"
             :label="item.id"
             v-for="(item, index) in allSiteList"
+            :disabled="item.status != 0"
             :key="item.index"
-            @change="showstep(item.name.substr(3) - 1)"
+            @change="showstep(index)"
             >{{ item.name }}</el-radio
           >
           <el-button
@@ -158,9 +161,9 @@ export default {
       cities: cityOptions,
       checkboxGroup1: ["上海"],
       radioA: 1,
-      radio1: "07:00 ~ 09:00",
-      radio2: "07:00 ~ 09:00",
-      radio3: "07:00 ~ 09:00",
+      radio1: "08:00 ~ 09:00",
+      radio2: "08:00 ~ 09:00",
+      radio3: "08:00 ~ 09:00",
       img1: "",
       dialogVisible: false,
       messageTime:"",
@@ -182,7 +185,13 @@ export default {
         data,
       })
       .then(() => {
-        this.radioA = this.allSite.data.list[0].id;
+        for(let k in this.allSite.data.list){
+          if(this.allSite.data.list[k].status == 0){
+            this.radioA = this.allSite.data.list[k].id;
+            this.num = this.allSite.data.list[k].name;
+            break;
+          }
+        }
         this.allSiteList = this.allSite.data.list;
         this.$store
           .dispatch("orderedSite", {
@@ -202,7 +211,7 @@ export default {
   methods: {
     showstep(ind) {
       this.$refs.carousel.setActiveItem(ind);
-      this.num = '篮球场' + (ind + 1).toString();
+      this.num = this.allSite.data.list[ind].name;
     },
     show(){
       this.dialogVisible = true;

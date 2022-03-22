@@ -185,13 +185,7 @@ export default {
         data,
       })
       .then(() => {
-        for(let k in this.allSite.data.list){
-          if(this.allSite.data.list[k].status == 0){
-            this.radioA = this.allSite.data.list[k].id;
-            this.num = this.allSite.data.list[k].name;
-            break;
-          }
-        }
+        this.radioA = this.allSite.data.list[0].id;
         this.allSiteList = this.allSite.data.list;
         this.$store
           .dispatch("orderedSite", {

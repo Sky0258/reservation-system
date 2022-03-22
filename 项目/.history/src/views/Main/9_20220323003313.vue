@@ -12,7 +12,7 @@
       <el-carousel-item
         v-for="(item, index) in allSiteList"
         :key="item.index"
-        style="width: 350px; margin-left: 85px; height: 150px"
+        style="width: 350px; margin-left: 82px; height: 150px"
       >
         <img
           :src="item.imgUrl"
@@ -25,9 +25,9 @@
         <div>
           <el-radio-group v-model="radio1">
             <el-radio-button
+              :disabled="result(city, day1, radioA)"
               class="contain"
               v-for="city in cities"
-              :disabled="result(city, day1, radioA)"
               :label="city"
               :key="city"
               >{{ city }}</el-radio-button
@@ -40,15 +40,10 @@
             :label="item.id"
             v-for="(item, index) in allSiteList"
             :key="item.index"
-            :disabled="item.status != 0"
             @change="showstep(index)"
             >{{ item.name }}</el-radio
           >
-          <el-button
-            type="primary"
-            plain
-            style="float=right"
-            @click="show"
+          <el-button type="primary" plain style="float=right" @click="show"
             >提交预约</el-button
           >
         </div>
@@ -72,15 +67,10 @@
             :label="item.id"
             v-for="(item, index) in allSiteList"
             :key="item.index"
-            :disabled="item.status != 0"
             @change="showstep(index)"
             >{{ item.name }}</el-radio
           >
-          <el-button
-            type="primary"
-            plain
-            style="float=right"
-            @click="show"
+          <el-button type="primary" plain style="float=right" @click="show"
             >提交预约</el-button
           >
         </div>
@@ -89,9 +79,9 @@
         <div>
           <el-radio-group v-model="radio3">
             <el-radio-button
+              :disabled="result(city, day3, radioA)"
               class="contain"
               v-for="city in cities"
-              :disabled="result(city, day3, radioA)"
               :label="city"
               :key="city"
               >{{ city }}</el-radio-button
@@ -104,31 +94,41 @@
             :label="item.id"
             v-for="(item, index) in allSiteList"
             :key="item.index"
-            :disabled="item.status != 0"
             @change="showstep(index)"
             >{{ item.name }}</el-radio
           >
-          <el-button
-            type="primary"
-            @click="show"
-            plain
-            style="float=right"
+          <el-button type="primary" @click="show" plain style="float=right"
             >提交预约</el-button
           >
         </div>
       </el-tab-pane>
     </el-tabs>
     <el-dialog title="预约信息" :visible.sync="dialogVisible" width="30%">
-      <el-descriptions :column="1" style="margin-top:-15px">
-        <el-descriptions-item label="用户id">{{this.userInfo.data.userId}}</el-descriptions-item>
-        <el-descriptions-item label="用户名">{{this.userInfo.data.username}}</el-descriptions-item>
-        <el-descriptions-item label="预约时间">{{this.messageTime}}</el-descriptions-item>
+      <el-descriptions :column="1" style="margin-top: -15px">
+        <el-descriptions-item label="用户id">{{
+          this.userInfo.data.userId
+        }}</el-descriptions-item>
+        <el-descriptions-item label="用户名">{{
+          this.userInfo.data.username
+        }}</el-descriptions-item>
+        <el-descriptions-item label="预约时间">{{
+          this.messageTime
+        }}</el-descriptions-item>
         <el-descriptions-item label="预约场地">
-          <el-tag size="small">{{this.num}}</el-tag>
+          <el-tag size="small">{{ this.num }}</el-tag>
         </el-descriptions-item>
       </el-descriptions>
-      <el-button @click="dialogVisible = false" style="margin-top: 15px;margin-right: 20px">取 消</el-button>
-      <el-button type="primary" @click="submitForm1('ruleForm1')" style="margin-top: 15px">确 定</el-button>
+      <el-button
+        @click="dialogVisible = false"
+        style="margin-top: 15px; margin-right: 20px"
+        >取 消</el-button
+      >
+      <el-button
+        type="primary"
+        @click="submitForm1('ruleForm1')"
+        style="margin-top: 15px"
+        >确 定</el-button
+      >
     </el-dialog>
   </div>
 </template>
@@ -160,15 +160,17 @@ export default {
       day3: this.ShowDate(-2),
       cities: cityOptions,
       checkboxGroup1: ["上海"],
-      radioA: 1,
+      radioA: 0,
       radio1: "08:00 ~ 09:00",
       radio2: "08:00 ~ 09:00",
       radio3: "08:00 ~ 09:00",
       img1: "",
+      nowDay: "",
+      nowDay1: "",
       dialogVisible: false,
-      messageTime:"",
-      num:"网球场1",
-      allSiteList:""
+      messageTime: "",
+      num: "羽毛球场1",
+      allSiteList: "",
     };
   },
   mounted() {
@@ -177,7 +179,7 @@ export default {
       pageSize: 100,
     };
     let userId = this.userInfo.data.userId;
-    let categoryId = 3;
+    let categoryId = 1;
     this.$store
       .dispatch("allSite", {
         userId,
@@ -185,21 +187,14 @@ export default {
         data,
       })
       .then(() => {
-        for(let k in this.allSite.data.list){
-          if(this.allSite.data.list[k].status == 0){
-            this.radioA = this.allSite.data.list[k].id;
-            this.num = this.allSite.data.list[k].name;
-            break;
-          }
-        }
+        this.radioA = this.allSite.data.list[0].id;
         this.allSiteList = this.allSite.data.list;
         this.$store
           .dispatch("orderedSite", {
-            categoryId: 3,
+            categoryId: 1,
             userId: this.userInfo.data.userId,
           })
-          .then(() => {
-          })
+          .then(() => {})
           .catch(() => {
             this.$message.error("提取错误");
           });
@@ -213,7 +208,7 @@ export default {
       this.$refs.carousel.setActiveItem(ind);
       this.num = this.allSite.data.list[ind].name;
     },
-    show(){
+    show() {
       this.dialogVisible = true;
       let endedTime1, startedTime1;
       if (this.day == 0) {
@@ -226,7 +221,7 @@ export default {
         endedTime1 = this.ShowDate(-2) + " " + this.time3[1] + ":00";
         startedTime1 = this.ShowDate(-2) + " " + this.time3[0] + ":00";
       }
-      this.messageTime = '' + startedTime1 + ' ~ ' + endedTime1.substr(11,12);
+      this.messageTime = "" + startedTime1 + " ~ " + endedTime1.substr(11, 12);
     },
     result(city, day, radio) {
       let date = new Date();
@@ -235,12 +230,12 @@ export default {
       let b = city.substr(8, 10) + ":00";
       let c = "" + day + " " + a;
       let d = "" + day + " " + b;
-      if(day == this.ShowDate(0)){
-          let time = city.substr(8, 10);
-          let time1 = time.substr(0,2);
-          if(hour >= time1){
-            a = 1;
-          }
+      if (day == this.ShowDate(0)) {
+        let time = city.substr(8, 10);
+        let time1 = time.substr(0, 2);
+        if (hour >= time1) {
+          a = 1;
+        }
       }
       for (let index in this.ordered.data) {
         if (
@@ -260,14 +255,19 @@ export default {
       if (this.day == 0) {
         endedTime1 = this.ShowDate(0) + " " + this.time1[1] + ":00";
         startedTime1 = this.ShowDate(0) + " " + this.time1[0] + ":00";
+        console.log(startedTime1);
+        console.log(endedTime1);
       } else if (this.day == 1) {
         endedTime1 = this.ShowDate(-1) + " " + this.time2[1] + ":00";
         startedTime1 = this.ShowDate(-1) + " " + this.time2[0] + ":00";
+        console.log(startedTime1);
+        console.log(endedTime1);
       } else {
         endedTime1 = this.ShowDate(-2) + " " + this.time3[1] + ":00";
         startedTime1 = this.ShowDate(-2) + " " + this.time3[0] + ":00";
+        console.log(startedTime1);
+        console.log(endedTime1);
       }
-      this.messageTime = '' + startedTime1 + ' ~ ' + endedTime1.substr(11,12);
       let siteName1 = this.num;
       let userId = this.userInfo.data.userId;
       let data = {
@@ -283,13 +283,13 @@ export default {
         .then(() => {
           this.$message({
             type: "success",
-            message: "预约成功!",
+            message: "提交成功!",
           });
         })
         .catch(() => {
           this.$message.error("当前时间段该场地已超时，无法预约");
         });
-        this.dialogVisible = false;
+      this.dialogVisible = false;
     },
     ShowDate(date) {
       var num = date;
@@ -329,6 +329,12 @@ export default {
     },
     time3: function () {
       return this.radio3.split(" ~ ");
+    },
+    time4: function () {
+      return this.nowDay.split(" ");
+    },
+    time5: function () {
+      return this.nowDay1.split(" ");
     },
   },
 };

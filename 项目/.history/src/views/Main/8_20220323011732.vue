@@ -39,8 +39,8 @@
             v-model="radioA"
             :label="item.id"
             v-for="(item, index) in allSiteList"
-            :key="item.index"
             :disabled="item.status != 0"
+            :key="item.index"
             @change="showstep(index)"
             >{{ item.name }}</el-radio
           >
@@ -71,8 +71,9 @@
             v-model="radioA"
             :label="item.id"
             v-for="(item, index) in allSiteList"
-            :key="item.index"
             :disabled="item.status != 0"
+            
+            :key="item.index"
             @change="showstep(index)"
             >{{ item.name }}</el-radio
           >
@@ -103,8 +104,8 @@
             v-model="radioA"
             :label="item.id"
             v-for="(item, index) in allSiteList"
-            :key="item.index"
             :disabled="item.status != 0"
+            :key="item.index"
             @change="showstep(index)"
             >{{ item.name }}</el-radio
           >
@@ -167,7 +168,7 @@ export default {
       img1: "",
       dialogVisible: false,
       messageTime:"",
-      num:"网球场1",
+      num:"篮球场1",
       allSiteList:""
     };
   },
@@ -177,7 +178,7 @@ export default {
       pageSize: 100,
     };
     let userId = this.userInfo.data.userId;
-    let categoryId = 3;
+    let categoryId = 0;
     this.$store
       .dispatch("allSite", {
         userId,
@@ -195,7 +196,7 @@ export default {
         this.allSiteList = this.allSite.data.list;
         this.$store
           .dispatch("orderedSite", {
-            categoryId: 3,
+            categoryId: 0,
             userId: this.userInfo.data.userId,
           })
           .then(() => {

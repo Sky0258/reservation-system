@@ -40,7 +40,6 @@
             :label="item.id"
             v-for="(item, index) in allSiteList"
             :key="item.index"
-            :disabled="item.status != 0"
             @change="showstep(index)"
             >{{ item.name }}</el-radio
           >
@@ -72,7 +71,6 @@
             :label="item.id"
             v-for="(item, index) in allSiteList"
             :key="item.index"
-            :disabled="item.status != 0"
             @change="showstep(index)"
             >{{ item.name }}</el-radio
           >
@@ -104,7 +102,6 @@
             :label="item.id"
             v-for="(item, index) in allSiteList"
             :key="item.index"
-            :disabled="item.status != 0"
             @change="showstep(index)"
             >{{ item.name }}</el-radio
           >
@@ -167,7 +164,7 @@ export default {
       img1: "",
       dialogVisible: false,
       messageTime:"",
-      num:"网球场1",
+      num:"篮球场1",
       allSiteList:""
     };
   },
@@ -177,7 +174,7 @@ export default {
       pageSize: 100,
     };
     let userId = this.userInfo.data.userId;
-    let categoryId = 3;
+    let categoryId = 0;
     this.$store
       .dispatch("allSite", {
         userId,
@@ -185,17 +182,11 @@ export default {
         data,
       })
       .then(() => {
-        for(let k in this.allSite.data.list){
-          if(this.allSite.data.list[k].status == 0){
-            this.radioA = this.allSite.data.list[k].id;
-            this.num = this.allSite.data.list[k].name;
-            break;
-          }
-        }
+        this.radioA = this.allSite.data.list[0].id;
         this.allSiteList = this.allSite.data.list;
         this.$store
           .dispatch("orderedSite", {
-            categoryId: 3,
+            categoryId: 0,
             userId: this.userInfo.data.userId,
           })
           .then(() => {
@@ -212,6 +203,7 @@ export default {
     showstep(ind) {
       this.$refs.carousel.setActiveItem(ind);
       this.num = this.allSite.data.list[ind].name;
+      console.log(this.num)
     },
     show(){
       this.dialogVisible = true;
