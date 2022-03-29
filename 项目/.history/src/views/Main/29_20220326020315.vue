@@ -1,0 +1,32 @@
+<template>
+  <div>
+       <el-table
+      :data="tableData"
+      style="width: 50%">
+      <el-table-column
+        prop="time"
+        label="时段"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="count"
+        label="预约数量"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop=""
+        label="地址">
+      </el-table-column>
+    </el-table>
+  </div>
+</template>
+
+<script>
+export default {
+
+}
+</script>
+
+<style>
+
+</style>

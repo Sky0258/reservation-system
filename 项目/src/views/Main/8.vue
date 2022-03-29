@@ -72,6 +72,7 @@
             :label="item.id"
             v-for="(item, index) in allSiteList"
             :disabled="item.status != 0"
+            
             :key="item.index"
             @change="showstep(index)"
             >{{ item.name }}</el-radio
