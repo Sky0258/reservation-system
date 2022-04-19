@@ -247,6 +247,7 @@ export default {
       this.$refs[formName].resetFields();
     },
     resetForm1(formName) {
+      console.log(this.ruleFormk);
       this.ruleForm1 = {...this.ruleFormk};
     },
     submitForm(formName) {

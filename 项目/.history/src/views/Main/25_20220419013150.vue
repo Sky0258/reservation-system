@@ -285,9 +285,9 @@ export default {
       this.getSiteList();
     },
     handleEdit(index, row) {
-      this.ruleFormk = {...row};
-      this.ruleForm1 = {...row};
       this.dialogVisible1 = true;
+      this.ruleForm1 = {...row};
+      this.resetForm("ruleForm1");
     },
     handleDelete(index, row) {
       this.$confirm("此操作将删除该场地信息, 是否继续?", "提示", {

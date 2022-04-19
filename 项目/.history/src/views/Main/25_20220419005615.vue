@@ -167,7 +167,7 @@
           <el-button type="primary" @click="submitForm1('ruleForm1')"
             >提交</el-button
           >
-          <el-button @click="resetForm1('ruleForm1')">重置</el-button>
+          <el-button @click="resetForm('ruleForm1')">重置</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -235,12 +235,6 @@ export default {
         imgUrl: "",
         status: "",
       },
-      ruleFormk: {
-        id: "",
-        name: "",
-        imgUrl: "",
-        status: "",
-      },
       search: "",
       value: "0",
       dialogVisible: false,
@@ -285,9 +279,9 @@ export default {
       this.getSiteList();
     },
     handleEdit(index, row) {
-      this.ruleFormk = {...row};
-      this.ruleForm1 = {...row};
       this.dialogVisible1 = true;
+      this.ruleForm1 = {...row};
+      this.resetForm("ruleForm1");
     },
     handleDelete(index, row) {
       this.$confirm("此操作将删除该场地信息, 是否继续?", "提示", {
@@ -321,9 +315,6 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-    },
-    resetForm1(formName) {
-      this.ruleForm1 = {...this.ruleFormk};
     },
     handleClose(done) {
       this.$confirm("是否确认关闭？")

@@ -29,7 +29,7 @@
             trigger: 'blur',
           }"
         >
-          <el-input v-model="ruleForm.name"></el-input>
+          <el-input v-model="ruleForm.roleName"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')"

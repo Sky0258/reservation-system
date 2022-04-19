@@ -86,70 +86,46 @@
         <el-form-item label="ID" prop="userId">
           <el-input v-model="ruleForm1.userId" disabled></el-input>
         </el-form-item>
-        <el-form-item
-          label="用户名"
-          prop="username"
-          :rules="{
+        <el-form-item label="用户名" prop="username" :rules="{
             required: true,
             message: '用户名不能为空',
             trigger: 'blur',
-          }"
-        >
+          }">
           <el-input v-model="ruleForm1.username"></el-input>
         </el-form-item>
-        <el-form-item
-          label="电话号码"
-          prop="mobileId"
-          :rules="{
+        <el-form-item label="电话号码" prop="mobileId" :rules="{
             required: true,
             message: '电话号码不能为空',
             trigger: 'blur',
-          }"
-        >
+          }">
           <el-input v-model.number="ruleForm1.mobileId"></el-input>
         </el-form-item>
-        <el-form-item
-          label="班级"
-          prop="className"
-          :rules="{
+        <el-form-item label="班级" prop="className" :rules="{
             required: true,
             message: '班级不能为空',
             trigger: 'blur',
-          }"
-        >
+          }">
           <el-input v-model.number="ruleForm1.className"></el-input>
         </el-form-item>
-        <el-form-item
-          label="学院"
-          prop="college"
-          :rules="{
+        <el-form-item label="学院" prop="college" :rules="{
             required: true,
             message: '学院不能为空',
             trigger: 'blur',
-          }"
-        >
+          }">
           <el-input v-model.number="ruleForm1.college"></el-input>
         </el-form-item>
-        <el-form-item
-          label="预约次数"
-          prop="orderCount"
-          :rules="{
+        <el-form-item label="预约次数" prop="orderCount" :rules="{
             required: true,
             message: '预约次数不能为空',
             trigger: 'blur',
-          }"
-        >
+          }">
           <el-input v-model.number="ruleForm1.orderCount"></el-input>
         </el-form-item>
-        <el-form-item
-          label="违约次数"
-          prop="breakCount"
-          :rules="{
+        <el-form-item label="违约次数" prop="breakCount" :rules="{
             required: true,
             message: '违约次数不能为空',
             trigger: 'blur',
-          }"
-        >
+          }">
           <el-input v-model.number="ruleForm1.breakCount"></el-input>
         </el-form-item>
         <el-form-item>
@@ -315,37 +291,37 @@ export default {
     //     });
     // },
     submitForm1(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          let userId = this.ruleForm1.userId;
-          let data = this.ruleForm1;
-          this.$store
-            .dispatch("userChange", {
-              userId,
-              data,
-            })
-            .then(() => {
-              this.dialogUserIfo = false;
-              this.$message({
-                type: "success",
-                message: "修改成功!",
-              });
-              this.getAllUserInfo();
-            })
-            .catch(() => {
-              this.$message.error("错误");
-            });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let userId = this.ruleForm1.userId;
+      let data = this.ruleForm1;
+      this.$store
+        .dispatch("userChange", {
+          userId,
+          data,
+        })
+        .then(() => {
+          this.dialogUserIfo = false;
+          this.$message({
+            type: "success",
+            message: "修改成功!",
+          });
+          this.getAllUserInfo();
+        })
+        .catch(() => {
+          this.$message.error("错误");
+        });
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
     resetForm1(formName) {
-      this.ruleForm1 = { ...this.ruleFormk };
+      this.ruleForm1 = {...this.ruleFormk};
     },
     handleClose(done) {
       this.$confirm("确认关闭？")

@@ -285,9 +285,9 @@ export default {
       this.getSiteList();
     },
     handleEdit(index, row) {
-      this.ruleFormk = {...row};
-      this.ruleForm1 = {...row};
       this.dialogVisible1 = true;
+      this.ruleForm1 = {...row};
+      this.resetForm("ruleForm1");
     },
     handleDelete(index, row) {
       this.$confirm("此操作将删除该场地信息, 是否继续?", "提示", {
@@ -322,9 +322,7 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    resetForm1(formName) {
-      this.ruleForm1 = {...this.ruleFormk};
-    },
+    
     handleClose(done) {
       this.$confirm("是否确认关闭？")
         .then((_) => {

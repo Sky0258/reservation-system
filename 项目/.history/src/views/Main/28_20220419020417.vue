@@ -22,14 +22,14 @@
       >
         <el-form-item
           label="新建角色名"
-          prop="name"
+          prop="roleName"
           :rules="{
             required: true,
             message: '角色名不能为空',
             trigger: 'blur',
           }"
         >
-          <el-input v-model="ruleForm.name"></el-input>
+          <el-input v-model="ruleForm.roleName"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')"
@@ -114,7 +114,7 @@
         class="demo-ruleForm"
         hide-required-asterisk
       >
-        <el-form-item label="角色名称" prop="name" :rules="{
+        <el-form-item label="角色名称" prop="roleName" :rules="{
             required: true,
             message: '角色名不能为空',
             trigger: 'blur',
@@ -299,7 +299,7 @@ export default {
     },
     showAddRole() {
       this.dialogVisible1 = true;
-      this.ruleForm.name = "";
+      this.ruleForm.roleName = "";
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
@@ -307,7 +307,7 @@ export default {
           this.$store
             .dispatch("addRole", {
               userId: this.userInfo.data.userId,
-              roleName: this.ruleForm.name,
+              roleName: this.ruleForm.roleName,
             })
             .then(() => {
               this.dialogVisible1 = false;
@@ -356,7 +356,7 @@ export default {
           this.$store
             .dispatch("changeRole", {
               roleId: this.ruleForm.id,
-              roleName: this.ruleForm.name,
+              roleName: this.ruleForm.roleName,
             })
             .then(() => {
               this.dialogVisible2 = false;

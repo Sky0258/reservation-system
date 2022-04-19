@@ -1,11 +1,7 @@
 <template>
   <div>
-    <el-button id="btn" type="success" @click="exportExcel"
-      >导出Excel</el-button
-    >
-    <h1 class="one">用户详细信息</h1>
+    <h1 class="one">管理员信息</h1>
     <el-table
-      id="download"
       :data="
         tableData.filter(
           (data) =>
@@ -15,34 +11,33 @@
       "
       style="width: 100%"
     >
-      <!-- <el-table-column label="序号" type="index" width="70px" align="center"> -->
-      <!-- </el-table-column> -->
       <el-table-column
         label="用户名"
         prop="username"
         align="center"
-        width="120px"
+        width="140px"
       >
       </el-table-column>
-      <el-table-column label="用户id" prop="userId" align="center">
+      <el-table-column
+        label="用户id"
+        prop="userId"
+        align="center"
+        width="140px"
+      >
       </el-table-column>
       <el-table-column label="电话号码" prop="mobileId" align="center">
       </el-table-column>
-      <!-- <el-table-column label="学院" prop="college" align="center">
-      </el-table-column>
-      <el-table-column label="班级" prop="className" align="center">
-      </el-table-column> -->
       <el-table-column
         label="预约次数"
         prop="orderCount"
-        width="130px"
+        width="120px"
         align="center"
       >
       </el-table-column>
       <el-table-column
         label="违约次数"
         prop="breakCount"
-        width="130px"
+        width="120px"
         align="center"
       >
       </el-table-column>
@@ -53,11 +48,10 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
-            icon="el-icon-edit"
             type="primary"
+            icon="el-icon-edit"
             @click="handleEdit(scope.$index, scope.row)"
-            >Edit</el-button
-          >
+          >Edit</el-button>
           <el-button
             size="mini"
             type="warning"
@@ -69,9 +63,9 @@
       </el-table-column>
     </el-table>
     <el-dialog
-      title="用户信息"
-      :visible.sync="dialogUserIfo"
-      width="30%"
+      title="管理员信息"
+      :visible.sync="dialogVisible1"
+      width="35%"
       :before-close="handleClose"
     >
       <el-form
@@ -86,70 +80,46 @@
         <el-form-item label="ID" prop="userId">
           <el-input v-model="ruleForm1.userId" disabled></el-input>
         </el-form-item>
-        <el-form-item
-          label="用户名"
-          prop="username"
-          :rules="{
+        <el-form-item label="用户名" prop="username" :rules="{
             required: true,
             message: '用户名不能为空',
             trigger: 'blur',
-          }"
-        >
+          }">
           <el-input v-model="ruleForm1.username"></el-input>
         </el-form-item>
-        <el-form-item
-          label="电话号码"
-          prop="mobileId"
-          :rules="{
+        <el-form-item label="电话号码" prop="mobileId" :rules="{
             required: true,
             message: '电话号码不能为空',
             trigger: 'blur',
-          }"
-        >
+          }">
           <el-input v-model.number="ruleForm1.mobileId"></el-input>
         </el-form-item>
-        <el-form-item
-          label="班级"
-          prop="className"
-          :rules="{
+        <el-form-item label="班级" prop="className" :rules="{
             required: true,
             message: '班级不能为空',
             trigger: 'blur',
-          }"
-        >
+          }">
           <el-input v-model.number="ruleForm1.className"></el-input>
         </el-form-item>
-        <el-form-item
-          label="学院"
-          prop="college"
-          :rules="{
+        <el-form-item label="学院" prop="college" :rules="{
             required: true,
             message: '学院不能为空',
             trigger: 'blur',
-          }"
-        >
+          }">
           <el-input v-model.number="ruleForm1.college"></el-input>
         </el-form-item>
-        <el-form-item
-          label="预约次数"
-          prop="orderCount"
-          :rules="{
+        <el-form-item label="预约次数" prop="orderCount" :rules="{
             required: true,
             message: '预约次数不能为空',
             trigger: 'blur',
-          }"
-        >
+          }">
           <el-input v-model.number="ruleForm1.orderCount"></el-input>
         </el-form-item>
-        <el-form-item
-          label="违约次数"
-          prop="breakCount"
-          :rules="{
+        <el-form-item label="违约次数" prop="breakCount" :rules="{
             required: true,
             message: '违约次数不能为空',
             trigger: 'blur',
-          }"
-        >
+          }">
           <el-input v-model.number="ruleForm1.breakCount"></el-input>
         </el-form-item>
         <el-form-item>
@@ -196,12 +166,12 @@
       >
     </el-dialog>
     <el-pagination
+      class="footer"
       @current-change="handleCurrentChange"
       :current-page.sync="currentPage"
-      :page-size="pageSize"
+      :page-size="6"
       layout="prev, pager, next, jumper"
       :total="totalPage"
-      class="footer"
     >
     </el-pagination>
   </div>
@@ -243,109 +213,41 @@ export default {
       },
       roleName: "",
       search: "",
+      dialogVisible: false,
+      dialogVisible1: false,
+      dialogVisible2: false,
       currentPage: 1,
       totalPage: 2,
-      dialogVisible2: false,
-      dialogUserIfo: false,
       value: "",
-      pageSize: 6,
     };
   },
   mounted() {
-    this.getAllUserInfo();
+    this.getManagerInfo();
     this.getAllRoleList();
   },
   methods: {
-    getAllUserInfo() {
-      let userId = this.userInfo.data.userId;
+    getManagerInfo() {
       let data = {
         pageNum: this.currentPage,
-        pageSize: this.pageSize,
-      };
-      this.$store
-        .dispatch("allUsersInfo", { userId, data })
-        .then(() => {
-          this.tableData = this.allUsersInfo.data.list;
-          this.tableData1 = this.allUsersInfo.data.list;
-          this.totalPage = this.allUsersInfo.data.total;
-        })
-        .catch(() => {
-          this.$message.error("获取信息错误！");
-        });
-    },
-    handleCurrentChange(val) {
-      let userId = this.userInfo.data.userId;
-      let data = {
-        pageNum: val,
         pageSize: 6,
       };
       this.$store
-        .dispatch("allUsersInfo", { userId, data })
+        .dispatch("managerInfo", {
+          userId: this.userInfo.data.userId,
+          data,
+        })
         .then(() => {
-          this.tableData = this.allUsersInfo.data.list;
-          this.totalPage = this.allUsersInfo.data.total;
+          this.tableData = this.managerInfo.data.list;
+          this.totalPage = this.managerInfo.data.total;
         })
         .catch(() => {
-          this.$message.error("获取信息错误！");
+          this.$message.error("错误");
         });
     },
     handleEdit(index, row) {
+      this.dialogVisible1 = true;
       this.ruleForm1 = { ...row };
       this.ruleFormk = { ...row };
-      this.dialogUserIfo = true;
-    },
-    // submitForm1(formName) {
-    //   let userId = this.ruleForm1.userId;
-    //   let data = this.ruleForm1;
-    //   this.$store
-    //     .dispatch("userChange", {
-    //       userId,
-    //       data,
-    //     })
-    //     .then(() => {
-    //       this.dialogUserIfo = false;
-    //       this.$message({
-    //         type: "success",
-    //         message: "修改成功!",
-    //       });
-    //       this.getAllUserInfo();
-    //     })
-    //     .catch(() => {
-    //       this.$message.error("错误");
-    //     });
-    // },
-    submitForm1(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          let userId = this.ruleForm1.userId;
-          let data = this.ruleForm1;
-          this.$store
-            .dispatch("userChange", {
-              userId,
-              data,
-            })
-            .then(() => {
-              this.dialogUserIfo = false;
-              this.$message({
-                type: "success",
-                message: "修改成功!",
-              });
-              this.getAllUserInfo();
-            })
-            .catch(() => {
-              this.$message.error("错误");
-            });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
-    resetForm1(formName) {
-      this.ruleForm1 = { ...this.ruleFormk };
     },
     handleClose(done) {
       this.$confirm("确认关闭？")
@@ -353,6 +255,50 @@ export default {
           done();
         })
         .catch((_) => {});
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+    resetForm1(formName) {
+      this.ruleForm1 = {...this.ruleFormk};
+    },
+    handleCurrentChange(val) {
+      let data = {
+        pageNum: val,
+        pageSize: 6,
+      };
+      this.$store
+        .dispatch("managerInfo", {
+          userId: this.userInfo.data.userId,
+          data,
+        })
+        .then(() => {
+          this.tableData = this.managerInfo.data.list;
+          this.totalPage = this.managerInfo.data.total;
+        })
+        .catch(() => {
+          this.$message.error("错误");
+        });
+    },
+    submitForm1(formName) {
+      let userId = this.ruleForm1.userId;
+      let data = this.ruleForm1;
+      this.$store
+        .dispatch("userChange", {
+          userId,
+          data,
+        })
+        .then(() => {
+          this.dialogVisible1 = false;
+          this.$message({
+            type: "success",
+            message: "修改成功!",
+          });
+          this.getManagerInfo();
+        })
+        .catch(() => {
+          this.$message.error("错误");
+        });
     },
     handleChoice(index, row) {
       this.ruleForm1 = { ...row };
@@ -405,52 +351,25 @@ export default {
           this.$message.error("错误");
         });
     },
-    exportExcel() {
-      this.$store
-        .dispatch("Excel", this.userInfo.data.userId)
-        .then(() => {
-          console.log(this.Excel);
-          var blob = new Blob([this.Excel], {
-            type: "application/vnd.ms-excel;charset=utf-8",
-          });
-          var downloadElement = document.createElement("a");
-          var href = window.URL.createObjectURL(blob); //创建下载的链接
-          downloadElement.href = href;
-          downloadElement.download = "用户详细信息.xls"; //下载后文件名
-          document.body.appendChild(downloadElement);
-          downloadElement.click(); //点击下载
-          document.body.removeChild(downloadElement); //下载完成移除元素
-          window.URL.revokeObjectURL(href); //释放掉blob对象
-        })
-        .catch(() => {
-          this.$message.error("错误");
-        });
-    },
   },
   computed: {
-    ...mapGetters(["userInfo", "allUsersInfo", "role", "allRoles", "Excel"]),
+    ...mapGetters(["userInfo", "managerInfo", "role", "allRoles"]),
   },
 };
 </script>
 
 <style scoped>
-h1 {
-  color: #409eff;
-  margin-top: 3px;
-  margin-bottom: 20px;
-  font-size: 18px;
-  float: left;
-  margin-left: 40%;
-}
 .footer {
   position: fixed;
-  bottom: 0px;
+  bottom: 5px;
   height: 40px;
   left: 100px;
   width: 100%;
   text-align: center;
 }
-.btn {
-  float: right;
+h1 {
+  color: #409eff;
+  margin-top: 4px;
+  font-size: 18px;
 }
 </style>

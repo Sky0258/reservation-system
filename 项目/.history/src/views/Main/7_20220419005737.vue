@@ -102,6 +102,7 @@
       :visible.sync="dialogVisible1"
       width="30%"
       :before-close="handleClose"
+      
     >
       <el-form
         :model="ruleForm1"
@@ -109,27 +110,18 @@
         ref="ruleForm1"
         label-width="80px"
         class="demo-ruleForm"
-        hide-required-asterisk
       >
-        <el-form-item label="标题" prop="title" :rules="{
-            required: true,
-            message: '标题不能为空',
-            trigger: 'blur',
-          }">
+        <el-form-item label="标题" prop="title">
           <el-input v-model="ruleForm1.title" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="内容" prop="content" :rules="{
-            required: true,
-            message: '内容不能为空',
-            trigger: 'blur',
-          }">
+        <el-form-item label="内容" prop="content">
           <el-input v-model="ruleForm1.content"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm1('ruleForm1')"
             >提交</el-button
           >
-          <el-button @click="resetForm1('ruleForm1')">重置</el-button>
+          <el-button @click="resetForm('ruleForm1')">重置</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -167,11 +159,6 @@ export default {
         title: "",
         content: "",
       },
-      ruleFormk: {
-        id: "",
-        title: "",
-        content: "",
-      },
       dialogVisible: false,
       search: "",
       currentPage: 1,
@@ -203,9 +190,8 @@ export default {
       this.ruleForm.content = "";
     },
     handleEdit(index, row) {
-      this.ruleFormk = {...row};
-      this.ruleForm1 = {...row};
       this.dialogVisible1 = true;
+      this.ruleForm1 = { ...row };
     },
     handleDelete(index, row) {
       console.log(index, row);
@@ -241,13 +227,10 @@ export default {
           done();
         })
         .catch((_) => {});
-      // this.resetForm("ruleForm1");
+      this.resetForm1("ruleForm1");
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-    },
-    resetForm1(formName) {
-      this.ruleForm1 = {...this.ruleFormk};
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
@@ -266,7 +249,6 @@ export default {
                 message: "添加成功!",
               });
               this.getNoticeList();
-              this.dialogVisible = false;
             })
             .catch(() => {
               this.$message.error("错误");
@@ -276,6 +258,7 @@ export default {
           return false;
         }
       });
+      this.dialogVisible = false;
     },
     submitForm1(formName) {
       this.$refs[formName].validate((valid) => {
@@ -296,7 +279,6 @@ export default {
                 message: "修改成功!",
               });
               this.getNoticeList();
-              this.dialogVisible1 = false;
             })
             .catch(() => {
               // this.resetForm1("ruleForm1");
@@ -307,6 +289,7 @@ export default {
           return false;
         }
       });
+      this.dialogVisible1 = false;
     },
     handleDelete(index, row) {
       this.$confirm("此操作将删除该公告, 是否继续?", "提示", {

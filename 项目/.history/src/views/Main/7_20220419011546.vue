@@ -129,7 +129,7 @@
           <el-button type="primary" @click="submitForm1('ruleForm1')"
             >提交</el-button
           >
-          <el-button @click="resetForm1('ruleForm1')">重置</el-button>
+          <el-button @click="resetForm('ruleForm1')">重置</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -167,11 +167,6 @@ export default {
         title: "",
         content: "",
       },
-      ruleFormk: {
-        id: "",
-        title: "",
-        content: "",
-      },
       dialogVisible: false,
       search: "",
       currentPage: 1,
@@ -203,9 +198,9 @@ export default {
       this.ruleForm.content = "";
     },
     handleEdit(index, row) {
-      this.ruleFormk = {...row};
       this.ruleForm1 = {...row};
       this.dialogVisible1 = true;
+      console.log(this.ruleForm1);
     },
     handleDelete(index, row) {
       console.log(index, row);
@@ -241,13 +236,10 @@ export default {
           done();
         })
         .catch((_) => {});
-      // this.resetForm("ruleForm1");
+      this.resetForm("ruleForm1");
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-    },
-    resetForm1(formName) {
-      this.ruleForm1 = {...this.ruleFormk};
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {

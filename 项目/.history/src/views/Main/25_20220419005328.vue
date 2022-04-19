@@ -127,18 +127,10 @@
         label-width="80px"
         class="demo-ruleForm"
       >
-        <el-form-item label="场地名称" prop="name" :rules="{
-            required: true,
-            message: '场地名称不能为空',
-            trigger: 'blur',
-          }">
+        <el-form-item label="器材名称" prop="name">
           <el-input v-model="ruleForm1.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="场地图片" prop="imgUrl" :rules="{
-            required: true,
-            message: '场地图片不能为空',
-            trigger: 'blur',
-          }">
+        <el-form-item label="图片地址" prop="imgUrl">
           <el-upload
             class="avatar-uploader"
             action="/api/uploadImg"
@@ -156,18 +148,14 @@
             <img width="100%" :src="dialogImageUrl" alt="" />
           </el-dialog>
         </el-form-item>
-        <el-form-item label="状态" prop="status" :rules="{
-            required: true,
-            message: '场地状态不能为空',
-            trigger: 'blur',
-          }">
+        <el-form-item label="状态" prop="status">
           <el-input v-model="ruleForm1.status" placeholder="0为开放,1为维修"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm1('ruleForm1')"
             >提交</el-button
           >
-          <el-button @click="resetForm1('ruleForm1')">重置</el-button>
+          <el-button @click="resetForm('ruleForm1')">重置</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -235,12 +223,6 @@ export default {
         imgUrl: "",
         status: "",
       },
-      ruleFormk: {
-        id: "",
-        name: "",
-        imgUrl: "",
-        status: "",
-      },
       search: "",
       value: "0",
       dialogVisible: false,
@@ -285,9 +267,9 @@ export default {
       this.getSiteList();
     },
     handleEdit(index, row) {
-      this.ruleFormk = {...row};
-      this.ruleForm1 = {...row};
       this.dialogVisible1 = true;
+      this.ruleForm1 = {...row};
+      this.resetForm("ruleForm1");
     },
     handleDelete(index, row) {
       this.$confirm("此操作将删除该场地信息, 是否继续?", "提示", {
@@ -322,9 +304,6 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    resetForm1(formName) {
-      this.ruleForm1 = {...this.ruleFormk};
-    },
     handleClose(done) {
       this.$confirm("是否确认关闭？")
         .then((_) => {
@@ -351,7 +330,6 @@ export default {
                 message: "添加成功!",
               });
               this.getSiteList();
-              this.dialogVisible = false;
             })
             .catch(() => {
               this.$message.error("错误");
@@ -361,6 +339,7 @@ export default {
           return false;
         }
       });
+      this.dialogVisible = false;
     },
     submitForm1(formName) {
       this.$refs[formName].validate((valid) => {
@@ -382,7 +361,6 @@ export default {
                 message: "修改成功!",
               });
               this.getSiteList();
-              this.dialogVisible1 = false;
             })
             .catch(() => {
               this.resetForm1("ruleForm1");
@@ -393,6 +371,7 @@ export default {
           return false;
         }
       });
+      this.dialogVisible1 = false;
     },
     handleCurrentChange(val) {
       let data = {

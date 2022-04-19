@@ -129,7 +129,7 @@
           <el-button type="primary" @click="submitForm1('ruleForm1')"
             >提交</el-button
           >
-          <el-button @click="resetForm1('ruleForm1')">重置</el-button>
+          <el-button @click="resetForm('ruleForm1')">重置</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -247,7 +247,7 @@ export default {
       this.$refs[formName].resetFields();
     },
     resetForm1(formName) {
-      this.ruleForm1 = {...this.ruleFormk};
+      this.ruleForm1 = this.ruleFormk;
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
