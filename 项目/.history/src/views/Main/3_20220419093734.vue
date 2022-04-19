@@ -16,21 +16,19 @@
         <el-form-item label="用户名" prop="username">
           <el-input v-model="sizeForm.username" disabled></el-input>
         </el-form-item>
-        <el-form-item
-          label="预约器材"
-          prop="equipment"
-          :rules="{
+        <el-form-item label="预约器材" prop="equipment" :rules="{
             required: true,
             message: '请选择预约器材',
             trigger: 'blur',
-          }"
-        >
+          }">
           <el-popover
             width="100"
             placement="right"
             trigger="focus"
             :content="this.num"
           >
+            <!-- <el-button slot="reference">hover 激活</el-button> -->
+
             <el-select
               v-model="sizeForm.equipment"
               placeholder="请选择所要预约的器材"
@@ -47,15 +45,11 @@
             </el-select>
           </el-popover>
         </el-form-item>
-        <el-form-item
-          label="开始时间"
-          prop="startTime"
-          :rules="{
+        <el-form-item label="开始时间" prop="startTime" :rules="{
             required: true,
             message: '请选择预约开始时间',
             trigger: 'blur',
-          }"
-        >
+          }">
           <el-date-picker
             v-model="sizeForm.startTime"
             value-format="yyyy-MM-dd HH:mm:ss"
@@ -65,15 +59,11 @@
           >
           </el-date-picker>
         </el-form-item>
-        <el-form-item
-          label="结束时间"
-          prop="endTime"
-          :rules="{
+        <el-form-item label="结束时间" prop="endTime" :rules="{
             required: true,
             message: '请选择预约结束时间',
             trigger: 'blur',
-          }"
-        >
+          }">
           <el-date-picker
             v-model="sizeForm.endTime"
             value-format="yyyy-MM-dd HH:mm:ss"
@@ -83,7 +73,11 @@
           >
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="器材数量" prop="count">
+        <el-form-item label="器材数量" prop="count" :rules="{
+            required: true,
+            message: '请选择器材数量',
+            trigger: 'blur',
+          }">
           <el-input-number
             v-model="sizeForm.count"
             :min="1"
@@ -94,9 +88,7 @@
           </el-input-number>
         </el-form-item>
         <el-form-item size="large">
-          <el-button type="primary" @click="onSubmit('sizeForm')"
-            >提交预约</el-button
-          >
+          <el-button type="primary" @click="onSubmit">提交预约</el-button>
           <el-button @click="resetForm('sizeForm')">重置</el-button>
         </el-form-item>
       </el-form>
@@ -108,35 +100,34 @@
 import { mapGetters } from "vuex";
 export default {
   data() {
-    let that = this;
+    let that = this
     return {
       sizeForm: {
         userId: "",
-        username: "",
         equipment: "",
         startTime: "",
         endTime: "",
         count: 1,
+        username: "",
       },
       num: "剩余数量",
       name: "",
       visible: "true",
       pickerOptions0: {
-        disabledDate(time) {
-          return time.getTime() < Date.now() - 8.64e7;
-        },
-      },
-      pickerOptions1: {
-        disabledDate(time) {
-          if (that.sizeForm.startTime) {
-            return (
-              time.getTime() <= new Date(that.sizeForm.startTime).getTime()
-            );
-          } else {
+          disabledDate(time) {
             return time.getTime() < Date.now() - 8.64e7;
           }
-        },
-      },
+        },  
+      pickerOptions1: {
+					disabledDate(time) {
+            if(that.sizeForm.startTime){
+              return time.getTime() <= new Date(that.sizeForm.startTime).getTime()
+            }
+            else{
+              return time.getTime() < Date.now() - 8.64e7;
+            }
+          }
+				},
     };
   },
   mounted() {
@@ -178,38 +169,29 @@ export default {
         });
     },
     onSubmit() {
-      if (
-        this.sizeForm.equipment &&
-        this.sizeForm.startTime &&
-        this.sizeForm.endTime
-      ) {
-        let a = this.sizeForm.equipment.split("~");
-        let userId = this.sizeForm.userId;
-        let data = {
-          count: this.sizeForm.count,
-          endedTime: this.sizeForm.endTime,
-          equipmentId: a[0],
-          startedTime: this.sizeForm.startTime,
-          userId: this.sizeForm.userId,
-          equipmentName: a[1],
-          username: this.sizeForm.username,
-        };
-        this.$store
-          .dispatch("orderEquipment", { userId, data })
-          .then(() => {
-            this.$message({
-              type: "success",
-              message: "预约成功!",
-            });
-            this.resetForm("sizeForm");
-          })
-          .catch(() => {
-            this.$message.error("预约失败，该器材数量不足");
+      let a = this.sizeForm.equipment.split("~");
+      let userId = this.sizeForm.userId;
+      let data = {
+        count: this.sizeForm.count,
+        endedTime: this.sizeForm.endTime,
+        equipmentId: a[0],
+        startedTime: this.sizeForm.startTime,
+        userId: this.sizeForm.userId,
+        equipmentName: a[1],
+        username: this.sizeForm.username,
+      };
+      this.$store
+        .dispatch("orderEquipment", { userId, data })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "预约成功!",
           });
-      } else {
-        this.$message.warning("请填入完整的预约信息");
-        return false;
-      }
+          this.resetForm("sizeForm");
+        })
+        .catch(() => {
+          this.$message.error("预约失败，该器材数量不足");
+        });
     },
     resetForm(formName) {
       (this.sizeForm.equipment = ""),

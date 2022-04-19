@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table :data="tableData" style="width: 48%; float: left">
+    <el-table :data="tableData" style="width: 49%; float: left">
       <el-table-column prop="time" label="时段" align="center">
       </el-table-column>
       <el-table-column prop="count" label="预约数量" align="center">

@@ -350,15 +350,13 @@ export default {
               this.$message.error("错误");
             });
         } else {
-          // console.log("error submit!!");
+          console.log("error submit!!");
           return false;
         }
       });
     },
     resetForm(formName) {
-      if (this.$refs[formName] !== undefined) {
-        this.$refs[formName].resetFields();
-      }
+      this.$refs[formName].resetFields();
     },
     resetForm1(formName) {
       this.ruleForm1 = {...this.ruleFormk};
@@ -390,7 +388,7 @@ export default {
               this.$message.error("错误");
             });
         } else {
-          // this.$message.error("错误");
+          this.$message.error("错误");
           return false;
         }
       });

@@ -356,9 +356,7 @@ export default {
       });
     },
     resetForm(formName) {
-      if (this.$refs[formName] !== undefined) {
-        this.$refs[formName].resetFields();
-      }
+      this.$refs[formName].resetFields();
     },
     resetForm1(formName) {
       this.ruleForm1 = {...this.ruleFormk};

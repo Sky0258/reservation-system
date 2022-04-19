@@ -274,7 +274,7 @@ export default {
               this.$message.error("错误");
             });
         } else {
-          // console.log("error submit!!");
+          console.log("error submit!!");
           return false;
         }
       });
@@ -305,7 +305,7 @@ export default {
               this.$message.error("错误");
             });
         } else {
-          // this.$message.error("错误");
+          this.$message.error("错误");
           return false;
         }
       });

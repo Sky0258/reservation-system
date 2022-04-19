@@ -153,11 +153,7 @@
           }">
           <el-input v-model="ruleForm1.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="器材图片" prop="imgUrl" :rules="{
-            required: true,
-            message: '器材图片不能为空',
-            trigger: 'blur',
-          }">
+        <el-form-item label="图片地址" prop="imgUrl">
           <el-upload
             class="avatar-uploader"
             action="/api/uploadImg"
@@ -350,15 +346,13 @@ export default {
               this.$message.error("错误");
             });
         } else {
-          // console.log("error submit!!");
+          console.log("error submit!!");
           return false;
         }
       });
     },
     resetForm(formName) {
-      if (this.$refs[formName] !== undefined) {
-        this.$refs[formName].resetFields();
-      }
+      this.$refs[formName].resetFields();
     },
     resetForm1(formName) {
       this.ruleForm1 = {...this.ruleFormk};
@@ -390,7 +384,7 @@ export default {
               this.$message.error("错误");
             });
         } else {
-          // this.$message.error("错误");
+          this.$message.error("错误");
           return false;
         }
       });

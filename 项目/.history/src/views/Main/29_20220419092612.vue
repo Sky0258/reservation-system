@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table :data="tableData" style="width: 48%; float: left">
+    <el-table :data="tableData" style="width: 50%; float: left">
       <el-table-column prop="time" label="时段" align="center">
       </el-table-column>
       <el-table-column prop="count" label="预约数量" align="center">
@@ -24,7 +24,6 @@
 <script>
 import { mapGetters } from "vuex";
 import * as echarts from "echarts";
-var myEcharts;
 export default {
   data() {
     return {
@@ -107,10 +106,10 @@ export default {
         });
     },
     show(pieDate) {
-      if (myEcharts != null && myEcharts != "" && myEcharts != undefined) {
-         myEcharts.dispose(); //解决echarts dom已经加载的报错
+      var myEcharts;
+      if (myEcharts != null && domEle != "" && domEle != undefined) {
+        domEle.dispose(); //解决echarts dom已经加载的报错
       }
-      myEcharts = echarts.init(document.getElementById("line"));
       var option = {
         color: [
           "#37A2DA",

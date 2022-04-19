@@ -31,7 +31,7 @@
             trigger="focus"
             :content="this.num"
           >
-            <el-select
+           <el-select
               v-model="sizeForm.equipment"
               placeholder="请选择所要预约的器材"
               slot="reference"
@@ -83,7 +83,15 @@
           >
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="器材数量" prop="count">
+        <el-form-item
+          label="器材数量"
+          prop="count"
+          :rules="{
+            required: true,
+            message: '请输入器材数量',
+            trigger: 'blur',
+          }"
+        >
           <el-input-number
             v-model="sizeForm.count"
             :min="1"
@@ -94,9 +102,7 @@
           </el-input-number>
         </el-form-item>
         <el-form-item size="large">
-          <el-button type="primary" @click="onSubmit('sizeForm')"
-            >提交预约</el-button
-          >
+          <el-button type="primary" @click="onSubmit('sizeForm')">提交预约</el-button>
           <el-button @click="resetForm('sizeForm')">重置</el-button>
         </el-form-item>
       </el-form>
@@ -112,11 +118,11 @@ export default {
     return {
       sizeForm: {
         userId: "",
-        username: "",
         equipment: "",
         startTime: "",
         endTime: "",
         count: 1,
+        username: "",
       },
       num: "剩余数量",
       name: "",
@@ -177,45 +183,67 @@ export default {
           this.$message.error("错误");
         });
     },
-    onSubmit() {
-      if (
-        this.sizeForm.equipment &&
-        this.sizeForm.startTime &&
-        this.sizeForm.endTime
-      ) {
-        let a = this.sizeForm.equipment.split("~");
-        let userId = this.sizeForm.userId;
-        let data = {
-          count: this.sizeForm.count,
-          endedTime: this.sizeForm.endTime,
-          equipmentId: a[0],
-          startedTime: this.sizeForm.startTime,
-          userId: this.sizeForm.userId,
-          equipmentName: a[1],
-          username: this.sizeForm.username,
-        };
-        this.$store
-          .dispatch("orderEquipment", { userId, data })
-          .then(() => {
-            this.$message({
-              type: "success",
-              message: "预约成功!",
+    // onSubmit() {
+    //   let a = this.sizeForm.equipment.split("~");
+    //   let userId = this.sizeForm.userId;
+    //   let data = {
+    //     count: this.sizeForm.count,
+    //     endedTime: this.sizeForm.endTime,
+    //     equipmentId: a[0],
+    //     startedTime: this.sizeForm.startTime,
+    //     userId: this.sizeForm.userId,
+    //     equipmentName: a[1],
+    //     username: this.sizeForm.username,
+    //   };
+    //   this.$store
+    //     .dispatch("orderEquipment", { userId, data })
+    //     .then(() => {
+    //       this.$message({
+    //         type: "success",
+    //         message: "预约成功!",
+    //       });
+    //       this.resetForm("sizeForm");
+    //     })
+    //     .catch(() => {
+    //       this.$message.error("预约失败，该器材数量不足");
+    //     });
+    // },
+    onSubmit(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          let a = this.sizeForm.equipment.split("~");
+          let userId = this.sizeForm.userId;
+          let data = {
+            count: this.sizeForm.count,
+            endedTime: this.sizeForm.endTime,
+            equipmentId: a[0],
+            startedTime: this.sizeForm.startTime,
+            userId: this.sizeForm.userId,
+            equipmentName: a[1],
+            username: this.sizeForm.username,
+          };
+          this.$store
+            .dispatch("orderEquipment", { userId, data })
+            .then(() => {
+              this.$message({
+                type: "success",
+                message: "预约成功!",
+              });
+              // this.resetForm("sizeForm");
+            })
+            .catch(() => {
+              this.$message.error("预约失败，该器材数量不足");
             });
-            this.resetForm("sizeForm");
-          })
-          .catch(() => {
-            this.$message.error("预约失败，该器材数量不足");
-          });
-      } else {
-        this.$message.warning("请填入完整的预约信息");
-        return false;
-      }
+        } else {
+          this.$message.warning("请填入完整的预约信息");
+          return false;
+        }
+      });
     },
     resetForm(formName) {
-      (this.sizeForm.equipment = ""),
-        (this.sizeForm.startTime = ""),
-        (this.sizeForm.endTime = ""),
-        (this.sizeForm.count = 1);
+      if (this.$refs[formName] !== undefined) {
+        this.$refs[formName].resetFields();
+      }
     },
   },
   computed: {
